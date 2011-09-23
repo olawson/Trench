@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="60" height="40" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="name" value="threeLane"/>
+  <property name="tickets" value="2000"/>
+ </properties>
  <tileset firstgid="1" name="black_32" tilewidth="16" tileheight="16">
   <image source="../../../Desktop/black_32.jpg" width="32" height="32"/>
  </tileset>
  <layer name="background" width="60" height="40">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAA+3PUQoAIAhEQb3/pSMi6AQWOQuDv76MtfxcHLdLb4dOAAAAAAAAAIDX7d3+o7KzS++8AzVknYCAJQAA
+   H4sIAAAAAAAAA+3PwQkAIAwEQe2/aRERrCBRMwdDvtne1vrn2nGr9FboBADeljW9evUCAHCbrOnVqxcAIMZe9h+RnVV65x1PoUXAgCUAAA==
   </data>
  </layer>
  <objectgroup name="nodes" width="60" height="40">
@@ -21,6 +25,8 @@
   </object>
   <object name="top_lane" type="area" x="128" y="0" width="704" height="176"/>
   <object name="top_lane" type="area" x="128" y="464" width="704" height="176"/>
-  <object name="mid_lane" type="area" x="208" y="240" width="528" height="160"/>
+  <object name="mid_lane" type="area" x="240" y="240" width="480" height="160"/>
+  <object name="l_crossover" x="128" y="176" width="112" height="288"/>
+  <object name="r_crossover" x="720" y="176" width="112" height="288"/>
  </objectgroup>
 </map>
