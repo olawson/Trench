@@ -1,0 +1,33 @@
+<html>
+<head>
+  <title>Trench War</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+
+  <style type="text/css">
+    canvas {
+      border: 1px solid black;
+      background-color: white;
+    }
+  </style>
+    <script type="text/javascript" src="src/soldier_type.js"></script>
+    <script type="text/javascript" src="src/soldier.js"></script>
+  <script type="text/javascript">
+      var render = function(){
+          var s = new Soldier();
+          s.x = 20;
+          s.y = 20;
+          var canvas = document.getElementById("bg_canvas");
+          var context = canvas.getContext("2d");
+
+          s.render(context);
+      };
+      $(render);
+
+  </script>
+</head>
+<body>
+<canvas width="480" height="320" id="bg_canvas"></canvas>
+
+</body>
+</html>
+
