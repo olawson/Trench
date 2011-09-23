@@ -2,12 +2,6 @@
 <html>
   <head>
     <title>Map Generator</title>
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="viewport" content="width = 640,user-scalable=no" />
-    <meta name="format-detection" content="telephone=no"/>
-
-
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
     <style>    
       .zone {
         position: relative;
@@ -21,34 +15,6 @@
       .gNode {
         opacity: 0.7;
       }
-      
-      .monster_sprite {
-        position: relative;
-      }
-      
-      .monster_sprite > div {
-        position: absolute;
-      }
-      
-      .monster_sprite div {
-        width: 150px;
-        height: 150px;
-      }
-      
-      .monster_sprite_2 .skin1 {
-        background: green;
-        -webkit-mask-image: url('/temp/images/monsters/ducker.png');
-      }
-      
-      .monster_sprite_2 .skin2 {
-        background: -webkit-gradient(linear, left top, left bottom, from(blue, red));
-        -webkit-mask-image: url('/temp/images/monsters/ducker.png');
-      }
-      
-      .monster_sprite_2 .overlay > div {
-        background-image: url('/temp/images/monsters/ducker.png');/*ducker_trans.png*/
-      }
-      
     /*-webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0))) */
       .sprite {
           overflow: hidden;
