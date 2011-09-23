@@ -1,2 +1,2 @@
 To start server:
-node server.js [port]
+node server.js [port] [debug_mode?]

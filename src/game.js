@@ -17,7 +17,12 @@ var Game = {
   },
   
   //start game (called from server)
-  start: function() {
-    
+  start: function(opponent) {
+    this.Opponent = new Player(name);
+    if(this.Player.side == 1) {
+      this.Opponent.side = 2;
+    } else {
+      this.Opponent.side = 1;
+    }
   }
 }

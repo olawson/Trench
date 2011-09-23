@@ -1,6 +1,7 @@
 //HTTP / WS Server for Trench Game
 
 var port = Number(process.argv[2]) || 1337;
+var debug = process.argv[3];
 
 var app = require('http')
   , io = require('socket.io')
@@ -8,7 +9,8 @@ var app = require('http')
   , static = require('node-static');
 
 //HTTP Hosting
-var file = new(static.Server)('.');
+var cache_time = (debug)? false : 3600;
+var file = new(static.Server)('.', { cache: cache_time }); //can also set # of seconds
 
 app = app.createServer(function (request, response) {
     request.addListener('end', function () {
@@ -24,11 +26,19 @@ app.listen(port);
 
 
 //WebSocket Server
+if(!debug) {
+  io.set('log level', 1); // reduce logging
+}
 io.sockets.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
+  socket.emit('init', { side: 1 }); //TODO - GET SIDE
+  
+  socket.on('set_name', function(name) {
+    socket.set('name', name, function () {
+      //socket.emit('ready');
+    });
   });
+  
+  
 });
 
 

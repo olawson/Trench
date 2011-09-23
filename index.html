@@ -35,6 +35,13 @@
       box-shadow: 10px 10px 5px #888;
       background: #EEE;
     }
+    
+    img.fight {
+      display: none;
+      position: absolute;
+      top: 125px;
+      left: 189px;
+    }
   </style>
 </head>
 <body>
@@ -47,6 +54,8 @@
   Host: <input type="text" class="host" value="localhost"/><br/>
   <input type="button" value="Connect" onclick="$(this).parent().hide(); Game.initPlayer($('#connect_dialog .host').val(), $('#connect_dialog .name').val());">
 </div>
+
+<img src="images/fight.jpg" class="fight"/>
 
 </body>
 </html>
