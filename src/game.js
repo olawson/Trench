@@ -10,6 +10,12 @@ var Game = {
     
   },
   
+  initPlayer: function(host, name) {
+    this.Player = new Player(name);
+    console.log(this.Player);
+    this.Player.connect(host);
+  },
+  
   //start game (called from server)
   start: function() {
     

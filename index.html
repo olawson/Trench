@@ -2,7 +2,16 @@
 <head>
   <title>Trench War</title>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
-  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="/src/game.js"></script>
+  <script type="text/javascript" src="/src/soldier_type.js"></script>
+  <script type="text/javascript" src="/src/soldier.js"></script>
+  <script type="text/javascript" src="/src/player.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      Game.load();
+    });
+  </script>
   
   <style>
     canvas {
@@ -15,11 +24,12 @@
     
     .dialog {
       display: none;
-      width: 400px;
-      height: 300px; 
+      width: 360px;
+      height: 230px; 
       position: absolute;
-      top: 10px;
+      top: 20px;
       left: 40px;
+      padding: 20px;
       -moz-box-shadow: 10px 10px 5px #888;
       -webkit-box-shadow: 10px 10px 5px #888;
       box-shadow: 10px 10px 5px #888;
@@ -32,9 +42,10 @@
 
 
 <div class="dialog" id="connect_dialog">
+  <h3>Connect to Game</h3>
   Name: <input type="text" class="name"><br/>
   Host: <input type="text" class="host" value="localhost"/><br/>
-  <input type="button" onclick=>
+  <input type="button" value="Connect" onclick="$(this).parent().hide(); Game.initPlayer($('#connect_dialog .host').val(), $('#connect_dialog .name').val());">
 </div>
 
 </body>
