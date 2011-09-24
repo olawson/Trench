@@ -16,6 +16,7 @@ function Soldier(side) {
         this.sprites = SpriteSets.axis;
         this.sprites_selected = SpriteSets.axis_selected;
     }
+    this.attackers = {};
 }
 
 Soldier.prototype.getId = function() {
@@ -40,6 +41,9 @@ Soldier.prototype.path = null;
 Soldier.prototype.conePaddingDegrees = 1;
 
 Soldier.prototype.getDamageForTarget = function(other){
+    if (this.path && this.path.path.length>0){
+        return 0;
+    }
     var r = this.classification.radius;
     var d = U_distance_2d(this.x, this.y, other.x, other.y);
     if (d>r){
@@ -50,6 +54,33 @@ Soldier.prototype.getDamageForTarget = function(other){
     var a_diff = Math.abs(this.direction - a);
     if (a_diff < this.classification.angle/2){
         return this.classification.damageAt(a_diff, d/r);
+    }
+};
+
+Soldier.prototype.continueDamageFrom = function(other, gameTime){
+    var attackerStart = this.endDamageFrom(other);
+
+    if (!attackerStart){
+        this.attackers[other.getId()] = {soldier : other, start : gameTime};
+    } else {
+        this.attackers[other.getId()] = attackerStart;
+        var timeUnderFire = Game.getTime() - attackerStart.start;
+        
+        while (timeUnderFire>1000){
+            this.updateHP(other.getDamageForTarget(this));
+            timeUnderFire -= 1000;
+            attackerStart.start += 1000;
+        }
+    }
+}
+
+Soldier.prototype.endDamageFrom = function(other){
+    var attacker = this.attackers[other.getId()];
+    if (attacker){
+        delete this.attackers[other.getId()];
+        return attacker;
+    } else {
+        return null;
     }
 };
 
@@ -215,6 +246,16 @@ Soldier.prototype.updatePosition = function(gametime){
       this.path.path = newpath;
     }
 };
+
+Soldier.prototype.updateHP = function (damage){
+    if (this.takeDamage(damage).dead){
+        Game.Player.sendUpdate("kill", this.getId(), {});
+    } else {
+        Game.Player.sendUpdate("damage", this.getId(), {damage : damage});
+    }
+
+
+}
 
 Soldier.prototype.takeDamage = function(damage) {
   this.HP -= damage;

@@ -106,14 +106,34 @@ var Game = {
   update: function(gameTime) {
     if(this.state == GameStates.playing) {
         for(var i in Game.Player.soldiers) {
+            Game.Player.soldiers[i].firing = false;
             Game.Player.soldiers[i].updatePosition(gameTime);
         }
 
         if(Game.Opponent) {
             for(var i in Game.Opponent.soldiers) {
+                Game.Opponent.soldiers[i].firing = false;
                 Game.Opponent.soldiers[i].updatePosition(gameTime);
             }
         }
+
+        for(var i in Game.Player.soldiers) {
+            var player_soldier = Game.Player.soldiers[i];
+            for(var j in Game.Opponent.soldiers) {
+                var opponent_soldier = Game.Opponent.soldiers[j];
+                if (player_soldier.getDamageForTarget(opponent_soldier)>0){
+                    player_soldier.firing = true;
+                }
+                if (opponent_soldier.getDamageForTarget(player_soldier)>0){
+                    player_soldier.continueDamageFrom(opponent_soldier, gameTime);
+                    opponent_soldier.firing = true;
+                } else {
+                    player_soldier.endDamageFrom(opponent_soldier);
+                }
+
+            }
+        }
+
     }
   },
   
