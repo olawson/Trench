@@ -4,18 +4,25 @@ function TrenchMap(config, areas) {
 
 TrenchMap.prototype.cfg = null;
 TrenchMap.prototype.areas = null;
+TrenchMap.prototype.spawn_points = null;
 
 /**
  * Constructor
  */
-TrenchMap.prototype.init = function(config, areas) {
+TrenchMap.prototype.init = function(config, objects) {
   
   this.cfg = {};
   $.extend(this.cfg, config);
   
   this.areas = [];
-  for(var i in areas) {
-    this.areas.push(new TrenchMapArea(areas[i]);
+  this.spawn_points = [];
+  for(var i in objects) {
+    var obj = objects[i];
+    if(obj.type == "spawn_point") {
+      this.spawn_points.push(obj);
+    } else {
+      this.areas.push(new TrenchMapArea(obj));
+    }
   }
 };
 

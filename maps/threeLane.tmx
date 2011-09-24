@@ -9,7 +9,7 @@
  </tileset>
  <layer name="background" width="60" height="40">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAA+3PwQkAIAwEQe2/aRERrCBRMwdDvtne1vrn2nGr9FboBADeljW9evUCAHCbrOnVqxcAIMZe9h+RnVV65x1PoUXAgCUAAA==
+   H4sIAAAAAAAAA+3X4QaAMBSA0UXv/8xJRq5VSnbVzjiiLfalfmwq25h+ruyuo/SO0Aln5qB1P3uPb/YdNV3NA2TKGnr16gX4l3jWiWeg1nxrfXz2bdnvCfa+8E0+/c/ursnurLKGXr16AQD6qCN7Hz07R+ldrwvuqpLdgCUAAA==
   </data>
  </layer>
  <objectgroup name="nodes" width="60" height="40">
@@ -28,5 +28,77 @@
   <object name="mid_lane" type="area" x="240" y="240" width="480" height="160"/>
   <object name="l_crossover" x="128" y="176" width="112" height="288"/>
   <object name="r_crossover" x="720" y="176" width="112" height="288"/>
+  <object name="L_SP_1" type="spawn_point" x="64" y="96">
+   <properties>
+    <property name="deg" value="0"/>
+    <property name="team" value="1"/>
+   </properties>
+  </object>
+  <object name="L_SP_2" type="spawn_point" x="64" y="176">
+   <properties>
+    <property name="deg" value="0"/>
+    <property name="team" value="1"/>
+   </properties>
+  </object>
+  <object name="L_SP_3" type="spawn_point" x="64" y="256">
+   <properties>
+    <property name="deg" value="0"/>
+    <property name="team" value="1"/>
+   </properties>
+  </object>
+  <object name="L_SP_4" type="spawn_point" x="64" y="336">
+   <properties>
+    <property name="deg" value="0"/>
+    <property name="team" value="1"/>
+   </properties>
+  </object>
+  <object name="L_SP_5" type="spawn_point" x="64" y="416">
+   <properties>
+    <property name="deg" value="0"/>
+    <property name="team" value="1"/>
+   </properties>
+  </object>
+  <object name="L_SP_6" type="spawn_point" x="64" y="512">
+   <properties>
+    <property name="deg" value="0"/>
+    <property name="team" value="1"/>
+   </properties>
+  </object>
+  <object name="R_SP_3" type="spawn_point" x="896" y="256">
+   <properties>
+    <property name="deg" value="180"/>
+    <property name="team" value="1"/>
+   </properties>
+  </object>
+  <object name="R_SP_6" type="spawn_point" x="896" y="512">
+   <properties>
+    <property name="deg" value="180"/>
+    <property name="team" value="1"/>
+   </properties>
+  </object>
+  <object name="R_SP_2" type="spawn_point" x="896" y="176">
+   <properties>
+    <property name="deg" value="180"/>
+    <property name="team" value="1"/>
+   </properties>
+  </object>
+  <object name="R_SP_1" type="spawn_point" x="896" y="96">
+   <properties>
+    <property name="deg" value="180"/>
+    <property name="team" value="1"/>
+   </properties>
+  </object>
+  <object name="R_SP_5" type="spawn_point" x="896" y="416">
+   <properties>
+    <property name="deg" value="180"/>
+    <property name="team" value="1"/>
+   </properties>
+  </object>
+  <object name="R_SP_4" type="spawn_point" x="896" y="336">
+   <properties>
+    <property name="deg" value="180"/>
+    <property name="team" value="1"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
