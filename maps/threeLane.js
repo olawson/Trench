@@ -12,11 +12,11 @@ var threeLane = new TrenchMap({"id":"threeLane","tickets":"2000"}, [
 {"name":"L_SP_4","type":"spawn_point","x":"64","y":"336","team":"1","deg":"0"}, 
 {"name":"L_SP_5","type":"spawn_point","x":"64","y":"416","team":"1","deg":"0"}, 
 {"name":"L_SP_6","type":"spawn_point","x":"64","y":"512","team":"1","deg":"0"}, 
-{"name":"R_SP_3","type":"spawn_point","x":"896","y":"256","team":"1","deg":"180"}, 
-{"name":"R_SP_6","type":"spawn_point","x":"896","y":"512","team":"1","deg":"180"}, 
-{"name":"R_SP_2","type":"spawn_point","x":"896","y":"176","team":"1","deg":"180"}, 
-{"name":"R_SP_1","type":"spawn_point","x":"896","y":"96","team":"1","deg":"180"}, 
-{"name":"R_SP_5","type":"spawn_point","x":"896","y":"416","team":"1","deg":"180"}, 
-{"name":"R_SP_4","type":"spawn_point","x":"896","y":"336","team":"1","deg":"180"}
+{"name":"R_SP_3","type":"spawn_point","x":"896","y":"256","team":"2","deg":"180"}, 
+{"name":"R_SP_6","type":"spawn_point","x":"896","y":"512","team":"2","deg":"180"}, 
+{"name":"R_SP_2","type":"spawn_point","x":"896","y":"176","team":"2","deg":"180"}, 
+{"name":"R_SP_1","type":"spawn_point","x":"896","y":"96","team":"2","deg":"180"}, 
+{"name":"R_SP_5","type":"spawn_point","x":"896","y":"416","team":"2","deg":"180"}, 
+{"name":"R_SP_4","type":"spawn_point","x":"896","y":"336","team":"2","deg":"180"}
 ]);
 

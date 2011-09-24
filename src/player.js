@@ -24,23 +24,17 @@ Player.prototype.connect = function(server) {
   });
   
   player.socket.on('init', function (data) {
-    console.log(data);
+    //console.log(data);
     player.side = data['side'];
     if(player.name == 'Player') {
       player.name += " " + player.side;
-    }
-    
-    //Attach soldiers to spawn points
-    for(var i = 0; i < Game.numSoldiersPerPlayer; i++) {
-      var spawn = Game.map.getSpawnPointForTeam(player.side);
-      player.soldiers[i].setSpawn(spawn);
     }
     
     player.socket.emit('join', { game_name: Game.name, player_name: player.name });
   });
   
   player.socket.on('start', function (data) {
-    console.log(data);
+    //console.log(data);
     Game.start(data['name'], data['start_time']);
   });
   

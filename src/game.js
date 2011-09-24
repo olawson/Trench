@@ -39,24 +39,38 @@ var Game = {
   
   //start game (called from server)
   start: function(opponent, startTime) {
-    $("img.fight").show().fadeOut(1500);
-    this.Opponent = new Player(opponent);
-    if(this.Player.side == 1) {
-      this.Opponent.side = 2;
-    } else {
-      this.Opponent.side = 1;
+    if(this.state == GameStates.preGame) {
+      this.state = GameStates.playing;
+      
+      $("img.fight").show().fadeOut(1500);
+      this.Opponent = new Player(opponent);
+      if(this.Player.side == 1) {
+        this.Opponent.side = 2;
+      } else {
+        this.Opponent.side = 1;
+      }
+      this.playerSides[this.Player.side] = this.Player;
+      this.playerSides[this.Opponent.side] = this.Opponent;
+    
+      this.startTime = startTime;
+    
+      //Attach soldiers to spawn points
+      for(var i = 0; i < Game.numSoldiersPerPlayer; i++) {
+      
+        var spawn = Game.map.getSpawnPointForTeam(this.Player.side);
+        this.Player.soldiers[i].setSpawn(spawn);
+      
+      
+        spawn = Game.map.getSpawnPointForTeam(this.Opponent.side);
+        this.Opponent.soldiers[i].setSpawn(spawn);
+      }
+    
+      this.enableClickListeners();
     }
-    this.playerSides[this.Player.side] = this.Player;
-    this.playerSides[this.Opponent.side] = this.Opponent;
-    
-    this.startTime = startTime;
-    
-    this.enableClickListeners();
   },
   
   lastTime: null,
   loop: function() {
-    
     if(this.state == GameStates.playing) {
       this.lastTime = this.lastTime || new Date().getTime();
       var now = new Date().getTime();
