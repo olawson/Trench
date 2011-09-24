@@ -29,8 +29,6 @@ Player.prototype.connect = function(server) {
     if(player.name == 'Player') {
       player.name += " " + player.side;
     }
-    
-    player.socket.emit('join', { game_name: Game.name, player_name: player.name });
   });
   
   player.socket.on('start', function (data) {
@@ -54,6 +52,20 @@ Player.prototype.connect = function(server) {
     console.log(data);
     player.socket.emit('disconnect');
   });
+}
+
+
+Player.prototype.sendUpdate = function(type, soldierId, data) {
+  socketData = {};
+  socketData['update_type'] = type;
+  
+  if(soldierId) {
+    socketData['soldier_id'] = soldierId;
+  }
+  
+  socketData[type] = data;
+  
+  this.socket.emit('update', socketData);
 }
 
 
