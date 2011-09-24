@@ -1,12 +1,18 @@
 var Game = {
   
   //setup for page load
+  map: null,
   load: function() {
     $("#connect_dialog").show();
+    
+    //TODO make this dynamic and pulled from something else
+    this.map = threeLane;
+    this.map.render();
   },
   
   //setup for game to begin
   init: function() {
+    
     
   },
   
@@ -30,6 +36,27 @@ var Game = {
     
     this.enableClickListeners();
   },
+  
+  lastTime: null,
+  loop: function() {
+    this.lastTime = this.lastTime || new Date().getTime();
+    var now = new Date().getTime();
+    
+    var gameTime = now - this.lastTime();
+    
+    this.update(gameTime);
+    this.render(gameTime);
+  },
+  
+  update: function(gameTime) {
+    
+  },
+  
+  render: function(gameTime) {
+    
+  },
+  
+  
   
   
   numSoldiersPerPlayer: 6,

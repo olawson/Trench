@@ -11,11 +11,24 @@
 		 Game.enableClickListeners();
 		</script>
   <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+  
     canvas {
-      background-color: #999;
+      border: 1px solid black;
       position: absolute;
       top: 0px;
       left: 0px;
+    }
+    
+    #battleBg {
+      border: 1px solid black;
+      background: #999;
+      width: 960px;
+      height: 640px;
+      position: absolute;
     }
     
     .dialog {
@@ -31,8 +44,14 @@
       background: #EEE;
     }
   </style>
+  <script>
+  $(document).ready(function(){
+    threeLane.render();
+  });
+  </script>
 </head>
 <body>
+<div id="battleBg"></div>
 <canvas width="960" height="640" id="bg_canvas"></canvas>
 
 

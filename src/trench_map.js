@@ -27,6 +27,13 @@ TrenchMap.prototype.init = function(config, objects) {
 };
 
 TrenchMap.prototype.render = function() {
+  $('#battleBg').css('background','url(maps/'+this.cfg.id+'.png)');
+};
+
+TrenchMap.prototype.filterPath = function(path) {
+  var filteredPath = [];
+  
+  return filteredPath;
 };
 
 
