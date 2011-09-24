@@ -17,7 +17,12 @@ var Game = {
     
     $("#connect_dialog").show();
     
-    //$('#gameList').append('<li>game name join link</li>');
+    $.get('/game_list', function(data) {
+      $('#gameList').append(data);
+      $('#gameList input.join').click(function() {
+        Game.init($('#connect_dialog .playerName').val(), $(this).attr('game'));
+      });
+    });
   },
   
   //setup for game to begin
