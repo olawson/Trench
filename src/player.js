@@ -1,9 +1,5 @@
 function Player(name) {
   this.name = name || 'Player';
-  
-  for(var i = 0; i < Game.numSoldiersPerPlayer; i++) {
-    this.soldiers.push(new Soldier());
-  }
 }
 
 Player.prototype.name = "";

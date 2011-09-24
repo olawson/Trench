@@ -1,7 +1,8 @@
 var GameStates = {
-  preGame: 0,
-  playing: 1,
-  over: 2
+  loaded: 0,
+  preGame: 1,
+  playing: 2,
+  over: 3
 };
 
 var Game = {
@@ -23,6 +24,8 @@ var Game = {
         Game.init($('#connect_dialog .playerName').val(), $(this).attr('game'));
       });
     });
+
+    window.setInterval(function(){Game.loop();}, 16);
   },
   
   //setup for game to begin
@@ -44,6 +47,7 @@ var Game = {
   
   //start game (called from server)
   start: function(opponent, startTime) {
+    console.log('Start');
     if(this.state == GameStates.preGame) {
       this.state = GameStates.playing;
       
@@ -62,12 +66,16 @@ var Game = {
       //Attach soldiers to spawn points
       for(var i = 0; i < Game.numSoldiersPerPlayer; i++) {
       
+      
+        var soldier = new Soldier(this.Player.side);
+        this.Player.soldiers.push(soldier);
         var spawn = Game.map.getSpawnPointForTeam(this.Player.side);
-        this.Player.soldiers[i].setSpawn(spawn);
+        soldier.setSpawn(spawn);
       
-      
-        spawn = Game.map.getSpawnPointForTeam(this.Opponent.side);
-        this.Opponent.soldiers[i].setSpawn(spawn);
+        var soldier = new Soldier(this.Opponent.side);
+        this.Opponent.soldiers.push(soldier);
+        var spawn = Game.map.getSpawnPointForTeam(this.Opponent.side);
+        soldier.setSpawn(spawn);
       }
     
       this.enableClickListeners();
