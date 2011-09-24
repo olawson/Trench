@@ -120,6 +120,16 @@ Soldier.prototype.setSpawn = function(spawn) {
   this.direction = parseInt(spawn.deg);
 };
 
+Soldier.prototype.setClassification = function(class_name) {
+  if(class_name == 'Grunt') {
+    this.classification = GenericSoldier;
+  } else if(class_name == 'Sniper') {
+    this.classification = Sniper;
+  } else if(class_name == 'Gunner') {
+    this.classification = MachineGunner;
+  }
+};
+
 /***
  * newPath {
  *     time: milliseconds,
@@ -127,6 +137,10 @@ Soldier.prototype.setSpawn = function(spawn) {
  * }
  */
 Soldier.prototype.setPath = function(newPath) {
+  //might get a new class from server, so check and update if necessary
+  if(newPath['classification']) {
+    this.setClassification(newPath['classification']);
+  }
   console.log(newPath);
 };
 
@@ -144,6 +158,14 @@ Soldier.prototype.takeDamage = function(damage) {
 Soldier.prototype.kill = function() {
   self.HP = 0;
 };
+
+Soldier.prototype.chooseTypeUi = function() {
+  $("#set_soldier_type").attr('soldier_id', this.getId());
+  $("#set_soldier_type fieldset").css('border-color', '');
+  $("#set_soldier_type fieldset."+this.classification.name).css('border-color', 'blue');
+  $("#overlay").show();
+  $("#set_soldier_type").show();
+}
 
 
 function Sprites(file, x, y, width, height, rotations, space, scale){
@@ -178,7 +200,7 @@ function Sprites(file, x, y, width, height, rotations, space, scale){
 
     this.canvas = c;
     this.context = cxt;
-}
+};
 
 Sprites.prototype.renderToContextWithAngle = function(context, theta){
     if (!this.ready) return;

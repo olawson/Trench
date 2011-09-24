@@ -86,6 +86,14 @@ Player.prototype.focusOn = function(soldier) {
  this.focusedSoldier = soldier;
 }
 
+Player.prototype.setSoldierType = function(soldierId, soldierClassName) {
+  soldier = this.soldierById[soldierId];
+  soldier.setClassification(soldierClassName);
+  
+  $("#overlay").hide();
+  $("#set_soldier_type").hide();
+}
+
 
 Player.prototype.sendUpdate = function(type, soldierId, data) {
   socketData = {};

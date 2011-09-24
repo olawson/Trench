@@ -40,7 +40,7 @@
     .dialog {
       display: none;
       width: 360px;
-      height: 230px; 
+      height: 330px; 
       position: absolute;
       top: 20px;
       left: 40px;
@@ -58,12 +58,40 @@
       left: 189px;
     }
     
+    #connect_dialog * {
+      padding: 5px;
+    }
+    
     #gameList {
-      min-height: 20px;
+      min-height: 100px;
     }
     
     fieldset {
       padding: 2px;
+    }
+    
+    fieldset.type_select {
+      background-color: white;
+    }
+    
+    fieldset.type_select div {
+      width: 340px;
+      height: 70px;
+    }
+    
+    fieldset.type_select div img {
+      vertical-align: top;
+      float: left;
+      height: 70px;
+    }
+    
+    #overlay {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      display: none;
     }
   </style>
 </head>
@@ -72,8 +100,13 @@
 <canvas width="960" height="640" id="bg_canvas"></canvas>
 
 
+<!-- Game UI -->
+
+<div id="overlay" onclick="$(this).hide();$('div.dialog:visible').hide();"></div>
+
 <div class="dialog" id="connect_dialog">
   <h3>Connect to Game</h3>
+  <br/>
   Player Name: <input type="text" class="playerName" value="" placeholder="(optional)"><br/>
    <fieldset>
      <legend>Existing Games</legend>
@@ -83,18 +116,38 @@
     </fieldset>
     <fieldset>
       <legend>New Game</legend>
-        Game Name: <input type="text" class="gameName" value="Trench Game"><br/>
+        Game Name: <input type="text" class="gameName" value="Trench Game"><br/><br/>
         Map:
         <select name="map">
           <option value="threeLane" selected>Three Lane</option>
          </select>
-         <input type="button" value="Create (well and join for now)" onclick="Game.init($('#connect_dialog .playerName').val(), $('#connect_dialog .gameName').val());">
+         <input type="button" value="Create" onclick="Game.init($('#connect_dialog .playerName').val(), $('#connect_dialog .gameName').val());">
      </fieldset>
 </div>
 
-<div class="dialog" id="set_soldier_class">
-  <h3>Connect to Game</h3>
-
+<div class="dialog" id="set_soldier_type">
+  <h3>Choose Soldier Class</h3>
+  <br/>
+  <fieldset class="type_select Grunt" onclick="Game.Player.setSoldierType($(this).parent().attr('soldier_id'), 'Grunt')">
+    <legend><h3>Grunt</h3></legend>
+    <div>
+      <img src="images/grunt.png" />Normal soldier, short ranged but has a wide field of fire and can shoot on the move.
+    </div>
+  </fieldset>
+  
+  <fieldset class="type_select Sniper" onclick="Game.Player.setSoldierType($(this).parent().attr('soldier_id'), 'Sniper')">
+    <legend><h3>Sniper</h3></legend>
+    <div>
+      <img src="images/sniper.png" />Sniper with a very narrow field of fire but tremendous range and good stopping power.
+    </div>
+  </fieldset>
+  
+  <fieldset class="type_select Gunner" onclick="Game.Player.setSoldierType($(this).parent().attr('soldier_id'), 'Gunner')">
+    <legend><h3>Gunner</h3></legend>
+    <div>
+      <img src="images/gunner.png" />Soldier with a powerful machine gun, has a high rate of fire with a medium fire arc and range.
+    </div>
+  </fieldset>
 </div>
 
 <img src="images/fight.jpg" class="fight"/>

@@ -169,7 +169,7 @@ var Game = {
     self.curPath = self.map.filterPath(self.curPath);
     
     if(self.Player.focusedSoldier) {
-      var path = {path: self.curPath, time: Game.getTime()};
+      var path = {path: self.curPath, time: Game.getTime(), classification: self.Player.focusedSoldier.classification.name};
       self.Player.sendUpdate('path', self.Player.focusedSoldier.getId(), path);
       self.Player.focusedSoldier.setPath(path);
     }
