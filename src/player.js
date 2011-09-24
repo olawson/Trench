@@ -1,5 +1,9 @@
 function Player(name) {
   this.name = name || 'Player';
+  
+  for(var i = 0; i < Game.numSoldiersPerPlayer; i++) {
+    self.soldiers.push(new Soldier());
+  }
 }
 
 Player.prototype.name = "";
@@ -8,6 +12,8 @@ Player.prototype.score = 0;
 Player.prototype.soldiers = [];
 Player.prototype.socket = null;
 
+
+//WebSocket event handlers
 Player.prototype.connect = function(server) {
   player = this;
   
@@ -30,6 +36,13 @@ Player.prototype.connect = function(server) {
   player.socket.on('update', function (data) {
     console.log(data);
     
+    if(data['update_type'] == 'path') {
+      Game.Opponent.soldiers[data['soldier_id']].setPath(data['path']);
+    } else if(data['update_type'] == 'damage') {
+      Game.Opponent.soldiers[data['soldier_id']].takeDamage(data['damage']);
+    } else if(data['update_type'] == 'death') {
+      Game.Opponent.soldiers[data['soldier_id']].kill();
+    }
   });
   
   player.socket.on('disconnect', function (data) {
