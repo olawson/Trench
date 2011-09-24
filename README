@@ -1,2 +1,0 @@
-To start server:
-node server.js [port(|| 1337)] [debug_mode?(|| false)]
