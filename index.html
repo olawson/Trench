@@ -19,12 +19,19 @@
   
   <style>
     canvas {
-      background-color: #999;
       position: absolute;
       top: 0px;
       left: 0px;
     }
     
+    #battleBg {
+      border: 1px solid black;
+      background: #999;
+      width: 960px;
+      height: 640px;
+      position: absolute;
+    }
+        
     .dialog {
       display: none;
       width: 360px;
@@ -48,6 +55,7 @@
   </style>
 </head>
 <body>
+<div id="battleBg"></div>
 <canvas width="960" height="640" id="bg_canvas"></canvas>
 
 
