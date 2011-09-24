@@ -50,6 +50,28 @@ Player.prototype.connect = function(server) {
   });
 }
 
+Player.prototype.findClosestSoldierTo = function(x, y) {
+  var minDistance = 999;
+  var closest = null;
+  var TOLERANCE = 60;
+  
+  for(var i in this.soldiers) {
+    var s = this.soldiers[i];
+    s.focused = false;
+    
+    var d = U_distance_2d(x,y,s.x,s.y);
+    if(d < minDistance) {
+      minDistance = d;
+      
+      if(d < TOLERANCE) {
+        closest = s;
+      }
+    }
+  }
+  
+  return closest;
+}
+
 
 Player.prototype.sendUpdate = function(type, soldierId, data) {
   socketData = {};

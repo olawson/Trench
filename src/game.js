@@ -141,6 +141,11 @@ var Game = {
     self.dragging = true;
     //Pick closest point
     
+    var soldier = Game.Player.findClosestSoldierTo(event.pageX, event.pageY);
+    if(soldier) {
+      soldier.focused = true;
+    }
+    
     if(Game.debugMouse == true) {
       U_debugPoint(event.pageX,event.pageY, 'green');
     }
@@ -168,6 +173,14 @@ var Game = {
         U_debugPoint(event.pageX,event.pageY, 'yellow');
       }
     }
+  },
+  
+  /**
+   * Debug all mouse interactions
+   */
+  debugAll: function() {
+    this.debugMouse = true;
+    
   },
   
   toString: function() {
