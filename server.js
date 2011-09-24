@@ -78,7 +78,7 @@ io.sockets.on('connection', function (socket) {
               Games[game][(i + 1) % 2].emit('start', { name: name, start_time: start_time });
             });
           }
-        },3000);
+        },1500);
       }
       
     });
