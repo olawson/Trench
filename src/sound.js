@@ -4,7 +4,6 @@ var shootSound;
 var hitSound;
 var killSound;
 
-
 function initSound() {
 
   soundManager.url = 'lib/SoundManager/swf/';
@@ -39,7 +38,7 @@ function initSound() {
 	  id: 'killSound',
 	  url: 'sounds/kill.mp3'
   });
-*/
+
 
 
 });
