@@ -135,7 +135,7 @@ Soldier.prototype.setPath = function(newPath) {
   this.path = newPath;
 };
 
-Soldier.prototype.updatePosition = function(){
+Soldier.prototype.updatePosition = function(gametime){
 
     var p = path.path;
     if (p.length==1){
@@ -146,7 +146,7 @@ Soldier.prototype.updatePosition = function(){
     }
 
     //how much time have we spent on this path?
-    var delta_time = Game.getTime() - path.time;
+    var delta_time = gametime - path.time;
 
     //how far did we get?
     var traveled = this.classification.speed/delta_time;

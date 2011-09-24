@@ -87,16 +87,26 @@ var Game = {
     if(this.state == GameStates.playing) {
       this.lastTime = this.lastTime || new Date().getTime();
       var now = new Date().getTime();
-    
-      var gameTime = now - this.lastTime;
-    
+
+      var gameTime = this.getTime();
+
       this.update(gameTime);
       this.render(gameTime);
     }
   },
   
-  update: function(gameTime) {
-    
+    update: function(gameTime) {
+        if(this.state == GameStates.playing) {
+            for(var i in Game.Player.soldiers) {
+                Game.Player.soldiers[i].updatePosition(gameTime);
+            }
+
+            if(Game.Opponent) {
+                for(var i in Game.Opponent.soldiers) {
+                    Game.Opponent.soldiers[i].updatePosition(gameTime);
+                }
+            }
+        }
   },
   
   render: function(gameTime) {
