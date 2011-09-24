@@ -17,8 +17,10 @@ app = app.createServer(function (request, response) {
   request.addListener('end', function () {
     //server list?
     //if(request['url'] == '/server_list')
+      
 
     // Serve files!
+    //else
     file.serve(request, response);
   });
 })
@@ -86,7 +88,7 @@ io.sockets.on('connection', function (socket) {
   socket.on('disconnect', function () {
     var game_name = socket.T_game;
     console.log("Disconnecting "+socket.T_player_id);
-    if(Games[game_name][(socket.T_player_id + 1) % 2]) {
+    if(Games[game_name] && Games[game_name][(socket.T_player_id + 1) % 2]) {
       console.log("Send disconnect to "+Games[game_name][(socket.T_player_id + 1) % 2].T_player_id);
       Games[game_name][(socket.T_player_id + 1) % 2].emit('disconnect');
     } else {
