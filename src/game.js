@@ -103,12 +103,12 @@ var Game = {
     
     //render all soldiers
     for(var i in Game.Player.soldiers) {
-      Game.Player.soldiers[i].render(this.context);
+      Game.Player.soldiers[i].render(this.context, true);
     }
     
     if(Game.Opponent) {
       for(var i in Game.Opponent.soldiers) {
-        Game.Opponent.soldiers[i].render(this.context);
+        Game.Opponent.soldiers[i].render(this.context, false);
       }
     }
     
@@ -149,6 +149,12 @@ var Game = {
     
     var soldier = Game.Player.getClosestSoldierTo(event.pageX, event.pageY);
     Game.Player.focusOn(soldier);
+    
+    if(soldier) {
+      var path = {time: Game.getTime(), path: [{x: soldier.x, y: soldier.y}]};
+      self.Player.sendUpdate('path', soldier.getId(), path);
+      this.setPath(path);
+    } 
     
     if(Game.debugMouse == true) {
       U_debugPoint(event.pageX,event.pageY, 'green');
