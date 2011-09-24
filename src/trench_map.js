@@ -4,7 +4,7 @@ function TrenchMap(config, areas) {
 
 TrenchMap.prototype.cfg = null;
 TrenchMap.prototype.areas = null;
-TrenchMap.prototype.spawn_points = null;
+TrenchMap.prototype.spawnPoints = null;
 
 /**
  * Constructor
@@ -15,13 +15,24 @@ TrenchMap.prototype.init = function(config, objects) {
   $.extend(this.cfg, config);
   
   this.areas = [];
-  this.spawn_points = [];
+  this.spawnPoints = [];
   for(var i in objects) {
     var obj = objects[i];
     if(obj.type == "spawn_point") {
-      this.spawn_points.push(obj);
+      this.spawnPoints.push(obj);
     } else {
       this.areas.push(new TrenchMapArea(obj));
+    }
+  }
+};
+
+TrenchMap.prototype.getSpawnPointForTeam = function(team) {
+  for(var i in this.spawnPoints) {
+    var sp = this.spawnPoints[i];
+    
+    if(sp.team == team && !sp.occupied) {
+      sp.occupied = true;
+      return sp;
     }
   }
 };
