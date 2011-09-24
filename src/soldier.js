@@ -217,10 +217,10 @@ Soldier.prototype.updatePosition = function(gametime){
 };
 
 Soldier.prototype.takeDamage = function(damage) {
-  self.HP -= damage;
+  this.HP -= damage;
 
-  if(self.HP <= 0) {
-    self.HP = 0;
+  if(this.HP <= 0) {
+    this.HP = 0;
     return { dead: true }
   } else {
     return { dead: false }
@@ -228,7 +228,8 @@ Soldier.prototype.takeDamage = function(damage) {
 };
 
 Soldier.prototype.kill = function() {
-  self.HP = 0;
+  this.HP = 0;
+  Game.playerSides[(this.side + 1) % 2].scorePoint();
 };
 
 Soldier.prototype.chooseTypeUi = function() {

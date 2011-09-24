@@ -97,6 +97,27 @@
       height: 100%;
       display: none;
     }
+    
+    .score {
+      display: none;
+      position: absolute;
+      height: 40px;
+      width: 60px;
+      text-align: right;
+      color: white;
+      font-weight: bold;
+      font-size: 26pt;
+    }
+    
+    #score_1 {
+      top: 5px;
+      left: 5px;
+    }
+
+    #score_2 {
+      top: 5px;
+      left: 895px;
+    }
   </style>
 </head>
 <body>
@@ -105,6 +126,9 @@
 
 
 <!-- Game UI -->
+
+<div id="score_1" class="score"></div>
+<div id="score_2" class="score"></div>
 
 <div id="overlay" onclick="$(this).hide();$('div.dialog:visible').hide();"></div>
 

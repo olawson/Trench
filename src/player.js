@@ -53,6 +53,12 @@ Player.prototype.connect = function(server) {
   });
 }
 
+
+Player.prototype.scorePoint = function(score) {
+  this.score += score || 1;
+  $("#score_"+this.side).html(this.score);
+}
+
 Player.prototype.getClosestSoldierTo = function(x, y) {
   var minDistance = 999;
   var closest = null;
