@@ -20,24 +20,41 @@
           var s = new Soldier();
           s.x = 40;
           s.y = 90;
-          s.direction = 10
+          s.direction = 0
           s.render(context);
 
           s.x = 140;
           s.y = 90;
           s.direction = 20;
-
+          s.HP = 70;
           s.render(context);
 
 
 
           s.x = 240;
-          s.y = 90;
+          s.y = 190;
+          s.HP = 10;
           s.direction = 175;
 
           s.render(context);
 
       };
+
+      var timed_render = function(count){
+          var canvas = document.getElementById("bg_canvas");
+          var context = canvas.getContext("2d");
+
+          var s = new Soldier();
+          s.x = 40;
+          s.y = 90;
+          s.direction = 0
+          var t = 0 - new Date().getTime();
+          for (var i=0; i<count; i++){
+              s.render(context);
+          }
+          t += new Date().getTime();
+          console.log(t + "ms")
+      }
       //$(render);
 
   </script>

@@ -22,11 +22,10 @@ Soldier.prototype.classification = MachineGunner;
 Soldier.prototype.direction = 45;
 Soldier.prototype.sprites = SpriteSets.axis;
 
-
-Soldier.prototype.render = function(context){
+Soldier.prototype.renderCone = function(context){
     context.save();
-    //translate to soldier-center = 0,0
-    context.translate(this.x,this.y);
+    context.fillStyle = "#AAAAFF";
+    context.globalAlpha = 0.1;
     context.beginPath();
 
     var theta = this.direction * Math.PI/180;
@@ -39,26 +38,51 @@ Soldier.prototype.render = function(context){
     var y2 = Math.sin(theta+delta/2)*r;
     context.lineTo(x1, y1);
     context.arc(0,0,r,theta-delta/2, theta+delta/2);
-//    context.arcTo(x1, y1, x2, y2, r);
     context.lineTo(0,0);
     context.lineTo(x2, y2);
-    context.closePath()
+    context.closePath();
+    context.fill();
     context.stroke();
+    context.globalAlpha = 1;
+    context.restore();
+};
+
+Soldier.prototype.renderStats = function(context){
+    context.save();
+    context.translate(-this.sprites.width/2,-this.sprites.height/2);
+    context.beginPath();
+    context.fillStyle = "red";
+    context.rect(0,0,20,5);
+    context.fill();
+    context.closePath();
+
+    context.beginPath();
+    context.fillStyle = "#00ff00";
+    context.rect(0,0,20*(this.HP/100),5);
+    context.fill();
+    context.closePath()
+
+    context.restore();
+};
 
 
-//    context.lineTo(0,0);
-    this.sprites.renderToContextWithAngle(context, this.direction)
-    //draw center based stuff
+Soldier.prototype.render = function(context){
 
+    context.save();
 
+    //translate to soldier-center = 0,0
+    context.translate(this.x,this.y);
 
+    this.renderCone(context);
+    this.sprites.renderToContextWithAngle(context, this.direction);
+    this.renderStats(context);
     context.restore();
 };
 
 
 Soldier.prototype.setPath = function(newPath) {
   
-}
+};
 
 Soldier.prototype.takeDamage = function(damage) {
   self.HP -= damage;
@@ -69,11 +93,11 @@ Soldier.prototype.takeDamage = function(damage) {
   } else {
     return { dead: false }
   }
-}
+};
 
 Soldier.prototype.kill = function() {
   self.HP = 0;
-}
+};
 
 
 function Sprites(file, x, y, width, height, rotations, space){
