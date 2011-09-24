@@ -136,7 +136,7 @@ Soldier.prototype.setPath = function(newPath) {
 };
 
 Soldier.prototype.updatePosition = function(gametime){
-    if(!this.path || this.path.length == 0) {
+    if(!this.path || this.path.path.length == 0) {
       return;
     }
 
@@ -152,6 +152,7 @@ Soldier.prototype.updatePosition = function(gametime){
 
     //how much time have we spent on this path?
     var delta_time = gametime - path.time;
+    this.path.time + delta_time;
 
     //how far did we get?
     var distanceToTravel = this.classification.speed/delta_time;
@@ -176,20 +177,19 @@ Soldier.prototype.updatePosition = function(gametime){
     }
 
     this.direction = U_angle_2d(segment_start.x, segment_start.y, segment_end.x, segment_end.y);
-    if(distanceToTravel)
     this.x = segment_start.x + distanceToTravel*Math.cos(this.direction*Math.PI/180);
     this.y = segment_start.y + distanceToTravel*Math.sin(this.direction*Math.PI/180);
+    this.x = segment_start.x;
+    this.y = segment_start.y;
 
     if (lastIndex < points.length){
       var newpath = [];
-      newpath.push({x: this.x, y:this.y});
+      //newpath.push({x: this.x, y:this.y});
       for (i = lastIndex+1; i < points.length; i++){
           newpath.push(points[i]);
       }
       this.path.path = newpath;
-      this.path.time = this.path.time+delta_time;
     }
-
 };
 
 Soldier.prototype.takeDamage = function(damage) {

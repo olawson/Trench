@@ -35,7 +35,7 @@ Player.prototype.connect = function(server) {
   });
   
   player.socket.on('update', function (data) {
-    console.log(data);
+    //console.log(data);
     
     if(data['update_type'] == 'path') {
       Game.Opponent.soldierById[data['soldier_id']].setPath(data['path']);

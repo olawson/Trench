@@ -114,7 +114,6 @@ TrenchMapArea.prototype.containsPoint = function(x,y) {
   var maxY = minY + this.cfg.height;
   
   var valid = (x >= minX && x <= maxX && y >= minY && y <= maxY);
-  console.log('Point valid?Area<'+this.cfg.name+'> <'+x+','+y+'> Area<'+minX+','+minY+','+maxX+','+maxY+'>, valid<'+valid+'>');
   
   return valid;
 };
