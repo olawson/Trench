@@ -62,6 +62,11 @@ var Game = {
       }
       this.playerSides[this.Player.side] = this.Player;
       this.playerSides[this.Opponent.side] = this.Opponent;
+      
+      this.Player.score = 0;
+      this.Opponent.score = 0;
+      $(".score").html(0);
+      $(".score").show();
     
       //Attach soldiers to spawn points
       for(var i = 0; i < Game.numSoldiersPerPlayer; i++) {
@@ -139,6 +144,7 @@ var Game = {
   
   playerSides: {},  //reference to each player by side (1 or 2)
   
+  maxScore: 100,
   
   dragging: false,
   
