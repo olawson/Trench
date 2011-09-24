@@ -57,6 +57,18 @@ function startSound() {
   loopSound(themeSound);	
 }
 
+function stopSound() {
+  soundManager.stopAll();	
+}
+
+function pauseSound() {
+  soundManager.pauseAll();	
+}
+
+function resumeSound() {
+  soundManager.resumeAll();	
+}
+
 function playShootSound() {
   shootSound.play();
 }
