@@ -18,12 +18,14 @@ var Game = {
   
   //start game (called from server)
   start: function(opponent) {
+    $("img.fight").show().fadeOut(1500);
     this.Opponent = new Player(opponent);
     if(this.Player.side == 1) {
       this.Opponent.side = 2;
     } else {
       this.Opponent.side = 1;
     }
+    this.enableClickListeners();
   },
   
   
