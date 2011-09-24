@@ -34,29 +34,29 @@ var Game = {
     
     Game.dragging = false;
     
-		document.addEventListener('mousedown', function(event) {
-			 Game.dragging = true;
-		    event.preventDefault();
-		    if(Game.debugMouse) {
-			  	U_debugPoint(event.pageX,event.pageY, 'green');
-  			}
-		}, false);
+    document.addEventListener('mousedown', function(event) {
+       Game.dragging = true;
+        event.preventDefault();
+        if(Game.debugMouse) {
+          U_debugPoint(event.pageX,event.pageY, 'green');
+        }
+    }, false);
 
-		document.addEventListener('mousemove', function(event) {
-			if(Game.dragging) {
-			  if(Game.debugMouse) {
-			  	U_debugPoint(event.pageX,event.pageY);
-  			}
-			}	
-		}, false);
+    document.addEventListener('mousemove', function(event) {
+      if(Game.dragging) {
+        if(Game.debugMouse) {
+          U_debugPoint(event.pageX,event.pageY);
+        }
+      } 
+    }, false);
 
-		document.addEventListener('mouseup', function(event) {
-			 Game.dragging = false;
-		   event.preventDefault();
-		   if(Game.debugMouse) {
-			   U_debugPoint(event.pageX,event.pageY, 'red');
-			 }
-		}, false);
+    document.addEventListener('mouseup', function(event) {
+       Game.dragging = false;
+       event.preventDefault();
+       if(Game.debugMouse) {
+         U_debugPoint(event.pageX,event.pageY, 'red');
+       }
+    }, false);
   },
   
   curPath: null,
