@@ -57,6 +57,14 @@
       top: 125px;
       left: 189px;
     }
+    
+    #gameList {
+      min-height: 20px;
+    }
+    
+    fieldset {
+      padding: 2px;
+    }
   </style>
 </head>
 <body>
@@ -82,6 +90,11 @@
          </select>
          <input type="button" value="Create (well and join for now)" onclick="Game.init($('#connect_dialog .playerName').val(), $('#connect_dialog .gameName').val());">
      </fieldset>
+</div>
+
+<div class="dialog" id="set_soldier_class">
+  <h3>Connect to Game</h3>
+
 </div>
 
 <img src="images/fight.jpg" class="fight"/>

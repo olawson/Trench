@@ -127,7 +127,7 @@ Soldier.prototype.setSpawn = function(spawn) {
  * }
  */
 Soldier.prototype.setPath = function(newPath) {
-  
+  console.log(newPath);
 };
 
 Soldier.prototype.takeDamage = function(damage) {

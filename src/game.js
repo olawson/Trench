@@ -69,11 +69,13 @@ var Game = {
         this.Player.soldiers.push(soldier);
         var spawn = Game.map.getSpawnPointForTeam(this.Player.side);
         soldier.setSpawn(spawn);
+        this.Player.soldierById[soldier.getId()] = soldier;
       
         soldier = new Soldier(this.Opponent.side);
         this.Opponent.soldiers.push(soldier);
         spawn = Game.map.getSpawnPointForTeam(this.Opponent.side);
         soldier.setSpawn(spawn);
+        this.Opponent.soldierById[soldier.getId()] = soldier;
       }
     
       this.enableClickListeners();

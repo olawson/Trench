@@ -1,5 +1,6 @@
 function Player(name) {
   this.name = name || 'Player';
+  this.soldierById = {};
   this.soldiers = [];
 }
 
@@ -37,11 +38,11 @@ Player.prototype.connect = function(server) {
     console.log(data);
     
     if(data['update_type'] == 'path') {
-      Game.Opponent.soldiers[data['soldier_id']].setPath(data['path']);
+      Game.Opponent.soldierById[data['soldier_id']].setPath(data['path']);
     } else if(data['update_type'] == 'damage') {
-      Game.Opponent.soldiers[data['soldier_id']].takeDamage(data['damage']);
+      Game.Opponent.soldierById[data['soldier_id']].takeDamage(data['damage']);
     } else if(data['update_type'] == 'death') {
-      Game.Opponent.soldiers[data['soldier_id']].kill();
+      Game.Opponent.soldierById[data['soldier_id']].kill();
     }
   });
   
