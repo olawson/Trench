@@ -44,6 +44,17 @@ TrenchMap.prototype.render = function() {
 TrenchMap.prototype.filterPath = function(path) {
   var filteredPath = [];
   
+  var prev = null;
+  for(var i in path) {
+    var cur = path[i];
+
+    //TODO filter path based on collision detection and redundancy
+
+    filteredPath.push(cur);
+    
+    prev = cur;
+  }
+  
   return filteredPath;
 };
 

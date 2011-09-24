@@ -42,6 +42,8 @@ var Game = {
   
   //start game (called from server)
   start: function(opponent, startTime) {
+    this.startTime = new Date().getTime();
+    
     console.log('Start');
     if(this.state == GameStates.preGame) {
       this.state = GameStates.playing;
@@ -56,20 +58,16 @@ var Game = {
       this.playerSides[this.Player.side] = this.Player;
       this.playerSides[this.Opponent.side] = this.Opponent;
     
-      this.startTime = startTime;
-    
       //Attach soldiers to spawn points
       for(var i = 0; i < Game.numSoldiersPerPlayer; i++) {
-      
-      
         var soldier = new Soldier(this.Player.side);
         this.Player.soldiers.push(soldier);
         var spawn = Game.map.getSpawnPointForTeam(this.Player.side);
         soldier.setSpawn(spawn);
       
-        var soldier = new Soldier(this.Opponent.side);
+        soldier = new Soldier(this.Opponent.side);
         this.Opponent.soldiers.push(soldier);
-        var spawn = Game.map.getSpawnPointForTeam(this.Opponent.side);
+        spawn = Game.map.getSpawnPointForTeam(this.Opponent.side);
         soldier.setSpawn(spawn);
       }
     
@@ -103,7 +101,7 @@ var Game = {
       Game.Player.soldiers[i].render(this.context);
     }
     
-    if(Game.Opponet) {
+    if(Game.Opponent) {
       for(var i in Game.Opponent.soldiers) {
         Game.Opponent.soldiers[i].render(this.context);
       }
@@ -137,14 +135,15 @@ var Game = {
   
   onTouchStart: function(event) {
     var self = window.Game;
+    self.Player.focusOn(null);
+    
+
     self.curPath = [];
     self.dragging = true;
     //Pick closest point
     
-    var soldier = Game.Player.findClosestSoldierTo(event.pageX, event.pageY);
-    if(soldier) {
-      soldier.focused = true;
-    }
+    var soldier = Game.Player.getClosestSoldierTo(event.pageX, event.pageY);
+    Game.Player.focusOn(soldier);
     
     if(Game.debugMouse == true) {
       U_debugPoint(event.pageX,event.pageY, 'green');
@@ -159,8 +158,14 @@ var Game = {
     self.curPath.push({x: event.pageX, y: event.pageY});
     
     self.dragging = false;
-    //
-    console.log(self.curPath);
+    //console.log(self.curPath);
+    self.curPath = self.map.filterPath(self.curPath);
+    
+    if(self.Player.focusedSoldier) {
+      var path = {path: self.curPath, time: Game.getTime()};
+      self.Player.sendUpdate('path', self.Player.focusedSoldier.getId(), path);
+      self.Player.focusedSoldier.setPath(path);
+    }
   },
   
   onTouchMove: function() {
@@ -173,6 +178,10 @@ var Game = {
         U_debugPoint(event.pageX,event.pageY, 'yellow');
       }
     }
+  },
+  
+  getTime: function() {
+    return new Date().getTime() - this.startTime;
   },
   
   /**

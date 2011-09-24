@@ -18,6 +18,10 @@ function Soldier(side) {
     }
 }
 
+Soldier.prototype.getId = function() {
+  return (this.spawn.name);
+};
+
 Soldier.prototype.HP = 100;
 Soldier.prototype.type = GenericSoldier;
 Soldier.prototype.radius = 10;
@@ -100,6 +104,12 @@ Soldier.prototype.setSpawn = function(spawn) {
   this.direction = parseInt(spawn.deg);
 };
 
+/***
+ * newPath {
+ *     time: milliseconds,
+ *     path: [ {x: 1, y: 2}, ... ]
+ * }
+ */
 Soldier.prototype.setPath = function(newPath) {
   
 };

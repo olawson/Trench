@@ -1,11 +1,12 @@
 function Player(name) {
   this.name = name || 'Player';
+  this.soldiers = [];
 }
 
 Player.prototype.name = "";
 Player.prototype.side = 0;
 Player.prototype.score = 0;
-Player.prototype.soldiers = [];
+Player.prototype.soldiers = null;
 Player.prototype.socket = null;
 
 
@@ -50,14 +51,13 @@ Player.prototype.connect = function(server) {
   });
 }
 
-Player.prototype.findClosestSoldierTo = function(x, y) {
+Player.prototype.getClosestSoldierTo = function(x, y) {
   var minDistance = 999;
   var closest = null;
   var TOLERANCE = 60;
   
   for(var i in this.soldiers) {
     var s = this.soldiers[i];
-    s.focused = false;
     
     var d = U_distance_2d(x,y,s.x,s.y);
     if(d < minDistance) {
@@ -70,6 +70,18 @@ Player.prototype.findClosestSoldierTo = function(x, y) {
   }
   
   return closest;
+}
+
+Player.prototype.focusedSoldier = null;
+Player.prototype.focusOn = function(soldier) {
+  if(this.focusedSoldier) {
+    this.focusedSoldier.focused = false;
+  }
+  
+ if(soldier) {
+   soldier.focused = true;
+ }
+ this.focusedSoldier = soldier;
 }
 
 
