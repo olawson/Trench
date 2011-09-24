@@ -38,7 +38,7 @@ TrenchMap.prototype.getSpawnPointForTeam = function(team) {
 };
 
 TrenchMap.prototype.render = function() {
-  $('#battleBg').css('background','url(maps/'+this.cfg.id+'.png)');
+  $('#battleBg').css('background','url(maps/'+this.cfg.id+'.jpg)');
 };
 
 TrenchMap.prototype.filterPath = function(path) {
