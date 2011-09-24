@@ -29,6 +29,9 @@ var Game = {
   },
   
   
+  numSoldiersPerPlayer: 6,
+  
+  
   dragging: false,
   
   enableClickListeners: function() {

@@ -26,3 +26,23 @@ Soldier.prototype.render = function(context){
     context.closePath();
   //  context.restore();
 }
+
+
+Soldier.prototype.setPath = function(newPath) {
+  
+}
+
+Soldier.prototype.takeDamage = function(damage) {
+  self.HP -= damage;
+
+  if(self.HP <= 0) {
+    self.HP = 0;
+    return { dead: true }
+  } else {
+    return { dead: false }
+  }
+}
+
+Soldier.prototype.kill = function() {
+  self.HP = 0;
+}
