@@ -35,6 +35,7 @@ Soldier.prototype.direction = 45;
 Soldier.prototype.sprites = SpriteSets.axis;
 Soldier.prototype.focused = false;
 Soldier.prototype.spawn = null;
+Soldier.prototype.path = null;
 
 Soldier.prototype.conePaddingDegrees = 1;
 
@@ -96,7 +97,10 @@ Soldier.prototype.renderStats = function(context){
 };
 
 
-Soldier.prototype.render = function(context){
+Soldier.prototype.render = function(context, isCurPlayer){
+
+  //TODO check isCurPlayer == true || is not in spawn
+
 
     context.save();
 
@@ -120,6 +124,7 @@ Soldier.prototype.setSpawn = function(spawn) {
   this.direction = parseInt(spawn.deg);
 };
 
+
 /***
  * newPath {
  *     time: milliseconds,
@@ -127,7 +132,7 @@ Soldier.prototype.setSpawn = function(spawn) {
  * }
  */
 Soldier.prototype.setPath = function(newPath) {
-  console.log(newPath);
+  this.path = newPath;
 };
 
 Soldier.prototype.takeDamage = function(damage) {
