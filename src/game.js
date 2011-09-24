@@ -79,7 +79,10 @@ var Game = {
       }
     
       this.enableClickListeners();
-    }
+      
+	  //Starting the audio
+	  startSound();
+    }  
   },
   
   lastTime: null,
@@ -185,9 +188,13 @@ var Game = {
     self.curPath = self.map.filterPath(self.curPath);
     
     if(self.Player.focusedSoldier) {
-      var path = {path: self.curPath, time: Game.getTime(), classification: self.Player.focusedSoldier.classification.name};
-      self.Player.sendUpdate('path', self.Player.focusedSoldier.getId(), path);
-      self.Player.focusedSoldier.setPath(path);
+      if((self.curPath[0]['x'] == event.pageX) && (self.curPath[0]['y'] == event.pageY) && self.map.isInSpawn(event.pageX,event.pageY)){
+        self.Player.focusedSoldier.chooseTypeUi();
+      } else {
+        var path = {path: self.curPath, time: Game.getTime(), classification: self.Player.focusedSoldier.classification.name};
+        self.Player.sendUpdate('path', self.Player.focusedSoldier.getId(), path);
+        self.Player.focusedSoldier.setPath(path);
+      }
     }
   },
   
