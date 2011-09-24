@@ -15,13 +15,23 @@ var file = new(static.Server)('.', { cache: cache_time }); //can also set # of s
 
 app = app.createServer(function (request, response) {
   request.addListener('end', function () {
-    //server list?
-    //if(request['url'] == '/server_list')
-      
+    // Game list?
+    if(request['url'] == '/game_list') {
+      var game_list = "";
+      var game_size = 0;
+      for(var game in Games) {
+        game_size = Games[game].length;
+        if((game_size < num_players) && (game_size > 0)) {
+          game_list += game+" ("+game_size+"/"+num_players+")&nbsp;&nbsp;&nbsp;<input type='button' class='join' game='"+game+"' value='Join'><br/>"
+        }
+      }
+      response.writeHead(200);
+      response.end(game_list);
 
     // Serve files!
-    //else
-    file.serve(request, response);
+    } else {
+      file.serve(request, response);
+    }
   });
 })
 io = io.listen(app)
@@ -44,7 +54,6 @@ io.sockets.on('connection', function (socket) {
     var game = data['game_name'];
     socket.T_game = game;
     if(!Games[game]) {
-      console.log("NO PLAYERS")
       Games[game] = new Array();
     }
     if(Games[game].length < num_players) {
@@ -69,7 +78,7 @@ io.sockets.on('connection', function (socket) {
               Games[game][(i + 1) % 2].emit('start', { name: name, start_time: start_time });
             });
           }
-        },3000);
+        },1500);
       }
       
     });
@@ -88,14 +97,15 @@ io.sockets.on('connection', function (socket) {
   socket.on('disconnect', function () {
     var game_name = socket.T_game;
     console.log("Disconnecting "+socket.T_player_id);
-    if(Games[game_name] && Games[game_name][(socket.T_player_id + 1) % 2]) {
-      console.log("Send disconnect to "+Games[game_name][(socket.T_player_id + 1) % 2].T_player_id);
-      Games[game_name][(socket.T_player_id + 1) % 2].emit('disconnect');
-    } else {
-      console.log('closed');
+    if(Games[game_name]) {
+      if(Games[game_name][(socket.T_player_id + 1) % 2]) {
+        console.log("Send disconnect to "+Games[game_name][(socket.T_player_id + 1) % 2].T_player_id);
+        Games[game_name][(socket.T_player_id + 1) % 2].emit('disconnect');
+      } else {
+        console.log('closed');
+      }
+      delete Games[game_name];
     }
-    //players = new Array();
-    Games[game_name] = null;
   });
 });
 

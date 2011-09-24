@@ -48,6 +48,7 @@ Player.prototype.connect = function(server) {
   player.socket.on('disconnect', function (data) {
     console.log(data);
     player.socket.emit('disconnect');
+    Game.load();
   });
 }
 
