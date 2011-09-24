@@ -18,26 +18,27 @@
           var context = canvas.getContext("2d");
 
           var s = new Soldier();
-          s.x = 20;
-          s.y = 20;
-          s.render(context);
-
           s.x = 40;
-          s.y = 60;
-          s.direction = (-20/360)*Math.PI*2;
+          s.y = 90;
+          s.direction = 10
+          s.render(context);
+
+          s.x = 140;
+          s.y = 90;
+          s.direction = 20;
 
           s.render(context);
 
-          var sp1 = new Sprites("images/soldiers.png",64, 0,  64,64,20,90);
-          var sp4 = new Sprites("images/soldiers.png",0,  0,  64,64,60,90);
-          var sp2 = new Sprites("images/soldiers.png",0, 64,  64,64,20,90);
 
-          context.drawImage(sp1.canvas,0,64);
-          context.drawImage(sp2.canvas,0,64*2);
-          context.drawImage(sp3.canvas,0,64*3);
-          context.drawImage(sp4.canvas,0,64*4);
+
+          s.x = 240;
+          s.y = 90;
+          s.direction = 175;
+
+          s.render(context);
+
       };
-      $(render);
+      //$(render);
 
   </script>
 </head>
