@@ -1,15 +1,13 @@
 function Player(name) {
   this.name = name || 'Player';
-  
-  for(var i = 0; i < Game.numSoldiersPerPlayer; i++) {
-    this.soldiers.push(new Soldier());
-  }
+  this.soldierById = {};
+  this.soldiers = [];
 }
 
 Player.prototype.name = "";
 Player.prototype.side = 0;
 Player.prototype.score = 0;
-Player.prototype.soldiers = [];
+Player.prototype.soldiers = null;
 Player.prototype.socket = null;
 
 
@@ -40,18 +38,52 @@ Player.prototype.connect = function(server) {
     console.log(data);
     
     if(data['update_type'] == 'path') {
-      Game.Opponent.soldiers[data['soldier_id']].setPath(data['path']);
+      Game.Opponent.soldierById[data['soldier_id']].setPath(data['path']);
     } else if(data['update_type'] == 'damage') {
-      Game.Opponent.soldiers[data['soldier_id']].takeDamage(data['damage']);
+      Game.Opponent.soldierById[data['soldier_id']].takeDamage(data['damage']);
     } else if(data['update_type'] == 'death') {
-      Game.Opponent.soldiers[data['soldier_id']].kill();
+      Game.Opponent.soldierById[data['soldier_id']].kill();
     }
   });
   
   player.socket.on('disconnect', function (data) {
     console.log(data);
     player.socket.emit('disconnect');
+    Game.load();
   });
+}
+
+Player.prototype.getClosestSoldierTo = function(x, y) {
+  var minDistance = 999;
+  var closest = null;
+  var TOLERANCE = 60;
+  
+  for(var i in this.soldiers) {
+    var s = this.soldiers[i];
+    
+    var d = U_distance_2d(x,y,s.x,s.y);
+    if(d < minDistance) {
+      minDistance = d;
+      
+      if(d < TOLERANCE) {
+        closest = s;
+      }
+    }
+  }
+  
+  return closest;
+}
+
+Player.prototype.focusedSoldier = null;
+Player.prototype.focusOn = function(soldier) {
+  if(this.focusedSoldier) {
+    this.focusedSoldier.focused = false;
+  }
+  
+ if(soldier) {
+   soldier.focused = true;
+ }
+ this.focusedSoldier = soldier;
 }
 
 

@@ -1,9 +1,9 @@
 var ROTQ = 60; //seperate sprite rotations
 var SpriteSets = {
-    allies          : new Sprites("images/soldiers.png",64, 0,  64,64,ROTQ, 90),
-    allies_selected : new Sprites("images/soldiers.png", 0, 0,  64,64,ROTQ, 90),
-    axis            : new Sprites("images/soldiers.png",64,64,  64,64,ROTQ, 90),
-    axis_selected   : new Sprites("images/soldiers.png",0 ,64,  64,64,ROTQ, 90)
+    allies          : new Sprites("images/soldiers.png",64, 0,  64,64,ROTQ, 90, 0.5),
+    allies_selected : new Sprites("images/soldiers.png", 0, 0,  64,64,ROTQ, 90, 0.5),
+    axis            : new Sprites("images/soldiers.png",64,64,  64,64,ROTQ, 90, 0.5),
+    axis_selected   : new Sprites("images/soldiers.png",0 ,64,  64,64,ROTQ, 90, 0.5)
 };
 
 //soldier side is 1 (allies) or 2 (axis)
@@ -18,6 +18,10 @@ function Soldier(side) {
     }
 }
 
+Soldier.prototype.getId = function() {
+  return (this.spawn.name);
+};
+
 Soldier.prototype.HP = 100;
 Soldier.prototype.type = GenericSoldier;
 Soldier.prototype.radius = 10;
@@ -31,15 +35,32 @@ Soldier.prototype.direction = 45;
 Soldier.prototype.sprites = SpriteSets.axis;
 Soldier.prototype.focused = false;
 Soldier.prototype.spawn = null;
+Soldier.prototype.path = null;
+
+Soldier.prototype.conePaddingDegrees = 1;
+
+Soldier.prototype.getDamageForTarget = function(other){
+    var r = this.classification.radius;
+    var d = U_distance_2d(this.x, this.y, other.x, other.y);
+    if (d>r){
+        return 0;
+    }
+
+    var a = U_angle_2d(this.x, this.y, other.x, other.y);
+    var a_diff = Math.abs(this.direction - a);
+    if (a_diff < this.classification.angle/2){
+        return this.classification.damageAt(a_diff, d/r);
+    }
+};
 
 Soldier.prototype.renderCone = function(context){
     context.save();
-    context.fillStyle = this.firing ? "#AAAAFF" : "#FF0000";
+    context.fillStyle = this.firing ? "#FF0000" : "#AAAAFF";
     context.globalAlpha = 0.1;
     context.beginPath();
 
     var theta = this.direction * Math.PI/180;
-    var delta = this.classification.angle * Math.PI/180;
+    var delta = (this.classification.angle + this.conePaddingDegrees) * Math.PI/180;
     context.moveTo(0,0);
     var r = this.classification.radius;
     var x1 = Math.cos(theta-delta/2)*r;
@@ -76,7 +97,10 @@ Soldier.prototype.renderStats = function(context){
 };
 
 
-Soldier.prototype.render = function(context){
+Soldier.prototype.render = function(context, isCurPlayer){
+
+  //TODO check isCurPlayer == true || is not in spawn
+
 
     context.save();
 
@@ -100,8 +124,15 @@ Soldier.prototype.setSpawn = function(spawn) {
   this.direction = parseInt(spawn.deg);
 };
 
+
+/***
+ * newPath {
+ *     time: milliseconds,
+ *     path: [ {x: 1, y: 2}, ... ]
+ * }
+ */
 Soldier.prototype.setPath = function(newPath) {
-  
+  this.path = newPath;
 };
 
 Soldier.prototype.takeDamage = function(damage) {
@@ -120,29 +151,31 @@ Soldier.prototype.kill = function() {
 };
 
 
-function Sprites(file, x, y, width, height, rotations, space){
-    this.width = width;
-    this.height = height;
+function Sprites(file, x, y, width, height, rotations, space, scale){
+    this.width = width * scale;
+    this.height = height * scale;
     this.rotations = rotations;
-    this.space = space;
+    this.space = space * scale;
 
     var c = document.createElement('canvas');
-    c.height = height;
-    c.width = space * rotations;
+    c.height = this.height;
+    c.width = this.space * rotations;
     var cxt = c.getContext("2d");
 
     var img = new Image();
+    var self = this;
     img.onload = function(){
-        cxt.drawImage(img, x, y, width, height, 0,0,width,height);
+        cxt.drawImage(img, x, y, width, height, 0,0,width*scale,height*scale);
         for (var r = 0; r<rotations; r++){
             cxt.save();
-            cxt.translate(space*r,0);
-            cxt.translate(width/2,height/2);
+            cxt.translate(space*scale*r,0);
+            cxt.translate(scale*width/2,scale*height/2);
             cxt.rotate(Math.PI*2*(r/rotations));
-            cxt.translate(-width/2,-height/2);
-            cxt.drawImage(c, 0, 0, width, height, 0,0,width,height);
+            cxt.translate(-scale*width/2,-scale*height/2);
+            cxt.drawImage(c, 0, 0, width*scale, height*scale, 0,0,width*scale,height*scale);
             cxt.restore();
         }
+        self.ready = true;
     };
     img.src = file;
 
@@ -153,6 +186,7 @@ function Sprites(file, x, y, width, height, rotations, space){
 }
 
 Sprites.prototype.renderToContextWithAngle = function(context, theta){
+    if (!this.ready) return;
     var index = Math.floor(this.rotations * (theta / 360));
     context.save();
     context.translate(-this.width/2, -this.height/2);

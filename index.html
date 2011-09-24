@@ -1,7 +1,7 @@
 <html>
 <head>
   <title>Trench War</title>
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="src/common.js"></script>
   <script type="text/javascript" src="src/game.js"></script>
@@ -22,6 +22,11 @@
   </script>
   
   <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+  
     canvas {
       position: absolute;
       top: 0px;
@@ -56,6 +61,14 @@
       top: 125px;
       left: 189px;
     }
+    
+    #gameList {
+      min-height: 20px;
+    }
+    
+    fieldset {
+      padding: 2px;
+    }
   </style>
 </head>
 <body>
@@ -68,9 +81,9 @@
   Player Name: <input type="text" class="playerName" value="" placeholder="(optional)"><br/>
    <fieldset>
      <legend>Existing Games</legend>
-     <ul id="gameList">
+     <div id="gameList">
      
-     </ul>
+     </div>
     </fieldset>
     <fieldset>
       <legend>New Game</legend>
@@ -81,6 +94,11 @@
          </select>
          <input type="button" value="Create (well and join for now)" onclick="Game.init($('#connect_dialog .playerName').val(), $('#connect_dialog .gameName').val());">
      </fieldset>
+</div>
+
+<div class="dialog" id="set_soldier_class">
+  <h3>Connect to Game</h3>
+
 </div>
 
 <img src="images/fight.jpg" class="fight"/>
