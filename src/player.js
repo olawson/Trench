@@ -2,7 +2,7 @@ function Player(name) {
   this.name = name || 'Player';
   
   for(var i = 0; i < Game.numSoldiersPerPlayer; i++) {
-    self.soldiers.push(new Soldier());
+    this.soldiers.push(new Soldier());
   }
 }
 
@@ -25,7 +25,8 @@ Player.prototype.connect = function(server) {
     if(player.name == 'Player') {
       player.name += " " + player.side;
     }
-    player.socket.emit('set_name', player.name);
+    
+    player.socket.emit('join', { game_name: Game.name, player_name: player.name });
   });
   
   player.socket.on('start', function (data) {

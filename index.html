@@ -53,8 +53,9 @@
 
 <div class="dialog" id="connect_dialog">
   <h3>Connect to Game</h3>
-  Player Name: <input type="text" class="name"><br/>
-  <input type="button" value="Connect" onclick="$(this).parent().hide(); Game.initPlayer($('#connect_dialog .name').val());">
+  Player Name: <input type="text" class="playerName"><br/>
+  Game Name: <input type="text" class="gameName"><br/>
+  <input type="button" value="Connect" onclick="Game.init($('#connect_dialog .playerName').val(), $('#connect_dialog .gameName').val());">
 </div>
 
 <img src="images/fight.jpg" class="fight"/>

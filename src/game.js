@@ -6,14 +6,16 @@ var Game = {
   },
   
   //setup for game to begin
-  init: function() {
-    
+  init: function(playerName, gameName) {
+    $("#connect_dialog").parent().hide();
+    this.name = gameName || new Date().getTime();
+    Game.initPlayer(playerName);
   },
   
   initPlayer: function(name) {
     this.Player = new Player(name);
     console.log(this.Player);
-    this.Player.connect(window.location.hostname);
+    this.Player.connect(window.location.hostname, self.name);
   },
   
   //start game (called from server)

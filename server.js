@@ -38,14 +38,17 @@ io.sockets.on('connection', function (socket) {
   }
   socket.emit('init', { side: socket.T_player_side }); //TODO - GET SIDE
   
-  socket.on('set_name', function(p_name) {
-    socket.set('p_name', p_name, function () {
+  socket.on('join', function(data) {
+    console.log(data)
+    console.log(data['game_name'])
+    name = data['player_name']
+    socket.set('name', name, function () {
       if(players.length == num_players) { //start game
         setTimeout(function() {
           //Note, currently this will only work properly for 2 players
           for(var i = 0; i < num_players; i++) {
-            players[i].get('p_name', function(err, p_name) {
-              players[(i + 1) % 2].emit('start', { name: p_name });
+            players[i].get('name', function(err, name) {
+              players[(i + 1) % 2].emit('start', { name: name });
             });
           }
         },3000);
