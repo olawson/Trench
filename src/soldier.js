@@ -24,6 +24,7 @@ Soldier.prototype.radius = 10;
 Soldier.prototype.x = 0;
 Soldier.prototype.y = 0;
 Soldier.prototype.dead = true;
+Soldier.prototype.firing = false;
 Soldier.prototype.classification = MachineGunner;
 
 Soldier.prototype.direction = 45;
@@ -32,7 +33,7 @@ Soldier.prototype.focused = false;
 
 Soldier.prototype.renderCone = function(context){
     context.save();
-    context.fillStyle = "#AAAAFF";
+    context.fillStyle = this.firing ? "#AAAAFF" : "#FF0000";
     context.globalAlpha = 0.1;
     context.beginPath();
 
