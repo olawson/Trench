@@ -17,8 +17,6 @@ var Game = {
     
     $("#connect_dialog").show();
     
-    this.state = 1;
-  
     //$('#gameList').append('<li>game name join link</li>');
   },
   
@@ -63,8 +61,6 @@ var Game = {
     
       var gameTime = now - this.lastTime;
     
-      console.log(gameTime);
-    
       this.update(gameTime);
       this.render(gameTime);
     }
@@ -76,10 +72,17 @@ var Game = {
   
   render: function(gameTime) {
     
+    this.context.clearRect(0,0,960,640);
     
     //render all soldiers
     for(var i in Game.Player.soldiers) {
       Game.Player.soldiers[i].render(this.context);
+    }
+    
+    if(Game.Opponet) {
+      for(var i in Game.Opponent.soldiers) {
+        Game.Opponent.soldiers[i].render(this.context);
+      }
     }
     
     
