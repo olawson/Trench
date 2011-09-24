@@ -79,7 +79,10 @@ var Game = {
       }
     
       this.enableClickListeners();
-    }
+      
+	  //Starting the audio
+	  startSound();
+    }  
   },
   
   lastTime: null,
