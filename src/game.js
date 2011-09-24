@@ -25,11 +25,16 @@ var Game = {
     } else {
       this.Opponent.side = 1;
     }
+    this.playerSides[this.Player.side] = this.Player;
+    this.playerSides[this.Opponent.side] = this.Opponent;
+    
     this.enableClickListeners();
   },
   
   
   numSoldiersPerPlayer: 6,
+  
+  playerSides: {},  //reference to each player by side (1 or 2)
   
   
   dragging: false,

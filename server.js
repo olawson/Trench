@@ -14,12 +14,10 @@ var cache_time = (debug)? false : 3600;
 var file = new(static.Server)('.', { cache: cache_time }); //can also set # of seconds
 
 app = app.createServer(function (request, response) {
-    request.addListener('end', function () {
-        //
-        // Serve files!
-        //
-        file.serve(request, response);
-    });
+  request.addListener('end', function () {
+    // Serve files!
+    file.serve(request, response);
+  });
 })
 io = io.listen(app)
 app.listen(port);
@@ -41,7 +39,6 @@ io.sockets.on('connection', function (socket) {
   socket.emit('init', { side: socket.T_player_side }); //TODO - GET SIDE
   
   socket.on('set_name', function(p_name) {
-    console.log("p_name: "+p_name)
     socket.set('p_name', p_name, function () {
       if(players.length == num_players) { //start game
         setTimeout(function() {

@@ -6,9 +6,9 @@ var SpriteSets = {
     axis_selected   : new Sprites("images/soldiers.png",0 ,64,  64,64,60, ROTQ)
 };
 
-//soldier team is "axis" or "allies"
-function Soldier(team) {
-  this.team = team;
+//soldier side is 1 (allies) or 2 (axis)
+function Soldier(side) {
+  this.side = side;
 }
 
 Soldier.prototype.HP = 100;
@@ -16,6 +16,7 @@ Soldier.prototype.type = GenericSoldier;
 Soldier.prototype.radius = 10;
 Soldier.prototype.x = 0;
 Soldier.prototype.y = 0;
+Soldier.prototype.dead = true;
 
 Soldier.prototype.direction = 45;
 
