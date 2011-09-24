@@ -184,13 +184,12 @@ var Game = {
     self.curPath.push({x: event.pageX, y: event.pageY});
     
     self.dragging = false;
-    //console.log(self.curPath);
-    self.curPath = self.map.filterPath(self.curPath);
     
     if(self.Player.focusedSoldier) {
       if((self.curPath[0]['x'] == event.pageX) && (self.curPath[0]['y'] == event.pageY) && self.map.isInSpawn(event.pageX,event.pageY)){
         self.Player.focusedSoldier.chooseTypeUi();
       } else {
+        self.curPath = self.map.filterPath(self.curPath);
         var path = {path: self.curPath, time: Game.getTime(), classification: self.Player.focusedSoldier.classification.name};
         self.Player.sendUpdate('path', self.Player.focusedSoldier.getId(), path);
         self.Player.focusedSoldier.setPath(path);
