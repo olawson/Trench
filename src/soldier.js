@@ -32,7 +32,7 @@ Soldier.prototype.sprites = SpriteSets.axis;
 Soldier.prototype.focused = false;
 Soldier.prototype.spawn = null;
 
-Soldier.prototype.conePaddingDegrees = 5;
+Soldier.prototype.conePaddingDegrees = 1;
 
 Soldier.prototype.getDamageForTarget = function(other){
     var r = this.classification.radius;
@@ -148,6 +148,7 @@ function Sprites(file, x, y, width, height, rotations, space, scale){
     var cxt = c.getContext("2d");
 
     var img = new Image();
+    var self = this;
     img.onload = function(){
         cxt.drawImage(img, x, y, width, height, 0,0,width*scale,height*scale);
         for (var r = 0; r<rotations; r++){
@@ -159,6 +160,7 @@ function Sprites(file, x, y, width, height, rotations, space, scale){
             cxt.drawImage(c, 0, 0, width*scale, height*scale, 0,0,width*scale,height*scale);
             cxt.restore();
         }
+        self.ready = true;
     };
     img.src = file;
 
@@ -169,6 +171,7 @@ function Sprites(file, x, y, width, height, rotations, space, scale){
 }
 
 Sprites.prototype.renderToContextWithAngle = function(context, theta){
+    if (!this.ready) return;
     var index = Math.floor(this.rotations * (theta / 360));
     context.save();
     context.translate(-this.width/2, -this.height/2);
