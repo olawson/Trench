@@ -166,10 +166,14 @@ Soldier.prototype.updatePosition = function(gametime){
 
     //how much time have we spent on this path?
     var delta_time = gametime - path.time;
-    this.path.time = this.path.time + delta_time;
 
     //how far did we get?
-    var distanceToTravel = this.classification.speed/delta_time;
+    var distanceToTravel = (this.classification.speed / 1000) * (delta_time);
+    console.log('Time: '+ delta_time);
+    console.log('Distance: '+ distanceToTravel);
+    this.path.time = this.path.time + delta_time;
+
+
 
     //so where on the path are we?
     //note: we have AT LEAST 2 path nodes if we are here!

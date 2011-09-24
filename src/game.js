@@ -98,18 +98,18 @@ var Game = {
     }
   },
   
-    update: function(gameTime) {
-        if(this.state == GameStates.playing) {
-            for(var i in Game.Player.soldiers) {
-                Game.Player.soldiers[i].updatePosition(gameTime);
-            }
+  update: function(gameTime) {
+    if(this.state == GameStates.playing) {
+        for(var i in Game.Player.soldiers) {
+            Game.Player.soldiers[i].updatePosition(gameTime);
+        }
 
-            if(Game.Opponent) {
-                for(var i in Game.Opponent.soldiers) {
-                    Game.Opponent.soldiers[i].updatePosition(gameTime);
-                }
+        if(Game.Opponent) {
+            for(var i in Game.Opponent.soldiers) {
+                Game.Opponent.soldiers[i].updatePosition(gameTime);
             }
         }
+    }
   },
   
   render: function(gameTime) {
