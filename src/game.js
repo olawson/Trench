@@ -87,16 +87,26 @@ var Game = {
     if(this.state == GameStates.playing) {
       this.lastTime = this.lastTime || new Date().getTime();
       var now = new Date().getTime();
-    
-      var gameTime = now - this.lastTime;
-    
+
+      var gameTime = this.getTime();
+
       this.update(gameTime);
       this.render(gameTime);
     }
   },
   
-  update: function(gameTime) {
-    
+    update: function(gameTime) {
+        if(this.state == GameStates.playing) {
+            for(var i in Game.Player.soldiers) {
+                Game.Player.soldiers[i].updatePosition(gameTime);
+            }
+
+            if(Game.Opponent) {
+                for(var i in Game.Opponent.soldiers) {
+                    Game.Opponent.soldiers[i].updatePosition(gameTime);
+                }
+            }
+        }
   },
   
   render: function(gameTime) {
@@ -105,12 +115,12 @@ var Game = {
     
     //render all soldiers
     for(var i in Game.Player.soldiers) {
-      Game.Player.soldiers[i].render(this.context);
+      Game.Player.soldiers[i].render(this.context, true);
     }
     
     if(Game.Opponent) {
       for(var i in Game.Opponent.soldiers) {
-        Game.Opponent.soldiers[i].render(this.context);
+        Game.Opponent.soldiers[i].render(this.context, false);
       }
     }
     
@@ -151,6 +161,12 @@ var Game = {
     
     var soldier = Game.Player.getClosestSoldierTo(event.pageX, event.pageY);
     Game.Player.focusOn(soldier);
+    
+    if(soldier) {
+      var path = {time: Game.getTime(), path: [{x: soldier.x, y: soldier.y}]};
+      self.Player.sendUpdate('path', soldier.getId(), path);
+      this.setPath(path);
+    } 
     
     if(Game.debugMouse == true) {
       U_debugPoint(event.pageX,event.pageY, 'green');

@@ -35,6 +35,7 @@ Soldier.prototype.direction = 45;
 Soldier.prototype.sprites = SpriteSets.axis;
 Soldier.prototype.focused = false;
 Soldier.prototype.spawn = null;
+Soldier.prototype.path = null;
 
 Soldier.prototype.conePaddingDegrees = 1;
 
@@ -96,7 +97,10 @@ Soldier.prototype.renderStats = function(context){
 };
 
 
-Soldier.prototype.render = function(context){
+Soldier.prototype.render = function(context, isCurPlayer){
+
+  //TODO check isCurPlayer == true || is not in spawn
+
 
     context.save();
 
@@ -141,7 +145,62 @@ Soldier.prototype.setPath = function(newPath) {
   if(newPath['classification']) {
     this.setClassification(newPath['classification']);
   }
-  console.log(newPath);
+
+  this.path = newPath;
+};
+
+Soldier.prototype.updatePosition = function(gametime){
+
+    var p = path.path;
+    if (p.length==1){
+        this.x = p.x;
+        this.y = p.y;
+        this.path.path = [];
+        return;
+    }
+
+    //how much time have we spent on this path?
+    var delta_time = gametime - path.time;
+
+    //how far did we get?
+    var traveled = this.classification.speed/delta_time;
+
+    //so where on the path are we?
+    //note: we have AT LEAST 2 path nodes if we are here!
+    var lastIndex = 0;
+    for (var i=0; i<p.length-1; i++){
+        var segment_start = p[i];
+        var segment_end = p[i+1];
+        var length = U_distance_2d(segment_start.x, segment_start.y, segment_end.x, segment_end.y);
+        if (length<=traveled) { //we are done!!
+            this.x = segment_end.x;
+            this.y = segment_end.y;
+            this.direction = U_angle_2d(segment_start.x, segment_start.y, segment_end.x, segment_end.y);
+            this.path.path = [];
+            lastIndex = -1; //we're done
+            break;
+        } else { //traverse this segment, and iterate to the next
+            traveled -= length;
+            lastIndex = i;
+        }
+    }
+
+    if (lastIndex>-1){
+        segment_start = p[lastIndex];
+        segment_end = p[lastIndex+1];
+        this.direction = U_angle_2d(segment_start.x, segment_start.y, segment_end.x, segment_end.y);
+        this.x = path[lastIndex].x + traveled*Math.cos(this.direction*Math.PI/180);
+        this.y = path[lastIndex].y + traveled*Math.cos(this.direction*Math.PI/180);
+
+        var newpath = [];
+        newpath.push({x: this.x, y:this.y});
+        for (i = lastIndex+1; i<path.length; i++){
+            newpath.push(path[i]);
+        }
+        this.path.path = newpath;
+        this.path.time = this.path.time+delta_time;
+    }
+
 };
 
 Soldier.prototype.takeDamage = function(damage) {
