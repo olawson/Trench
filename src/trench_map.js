@@ -73,6 +73,15 @@ TrenchMap.prototype.filterPath = function(path) {
   return filteredPath;
 };
 
+TrenchMap.prototype.isInSpawn = function(x, y) {
+  for(var i = 0; i < this.areas.length; i++) {
+    if(this.areas[i].cfg.spawn && this.areas[i].containsPoint(x, y))
+      return true;
+  }
+  
+  return false;
+};
+
 
 TrenchMap.prototype.pointValid = function(x, y) {
   for(var i in this.areas) {
@@ -131,4 +140,13 @@ TrenchMapArea.prototype.containsPoint = function(x,y) {
 
 TrenchMapArea.prototype.render = function() {
   //Mostly for debugging
+};
+
+TrenchMapArea.prototype.containsPoint = function(x, y) {
+  var within = true;
+  if(x < this.cfg.x || x > (this.cfg.x + this.cfg.width) || y < this.cfg.y || y > (this.cfg.y + this.cfg.height)) {
+    within = false;
+  }
+  
+  return within;
 };
