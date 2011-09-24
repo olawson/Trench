@@ -8,7 +8,14 @@ var SpriteSets = {
 
 //soldier side is 1 (allies) or 2 (axis)
 function Soldier(side) {
-  this.side = side;
+    this.side = side;
+    if (side==1){
+        this.sprites = SpriteSets.allies;
+        this.sprites_selected = SpriteSets.allies_selected;
+    } else {
+        this.sprites = SpriteSets.axis;
+        this.sprites_selected = SpriteSets.axis_selected;
+    }
 }
 
 Soldier.prototype.HP = 100;
@@ -17,16 +24,18 @@ Soldier.prototype.radius = 10;
 Soldier.prototype.x = 0;
 Soldier.prototype.y = 0;
 Soldier.prototype.dead = true;
+Soldier.prototype.firing = false;
 Soldier.prototype.classification = MachineGunner;
 
 Soldier.prototype.direction = 45;
 Soldier.prototype.sprites = SpriteSets.axis;
+Soldier.prototype.focused = false;
+Soldier.prototype.spawn = null;
 
-
-Soldier.prototype.render = function(context){
+Soldier.prototype.renderCone = function(context){
     context.save();
-    //translate to soldier-center = 0,0
-    context.translate(this.x,this.y);
+    context.fillStyle = this.firing ? "#AAAAFF" : "#FF0000";
+    context.globalAlpha = 0.1;
     context.beginPath();
 
     var theta = this.direction * Math.PI/180;
@@ -39,26 +48,61 @@ Soldier.prototype.render = function(context){
     var y2 = Math.sin(theta+delta/2)*r;
     context.lineTo(x1, y1);
     context.arc(0,0,r,theta-delta/2, theta+delta/2);
-//    context.arcTo(x1, y1, x2, y2, r);
     context.lineTo(0,0);
     context.lineTo(x2, y2);
-    context.closePath()
+    context.closePath();
+    context.fill();
     context.stroke();
+    context.globalAlpha = 1;
+    context.restore();
+};
 
+Soldier.prototype.renderStats = function(context){
+    context.save();
+    context.translate(-this.sprites.width/2,-this.sprites.height/2);
+    context.beginPath();
+    context.fillStyle = "red";
+    context.rect(0,0,20,5);
+    context.fill();
+    context.closePath();
 
-//    context.lineTo(0,0);
-    this.sprites.renderToContextWithAngle(context, this.direction)
-    //draw center based stuff
-
-
+    context.beginPath();
+    context.fillStyle = "#00ff00";
+    context.rect(0,0,20*(this.HP/100),5);
+    context.fill();
+    context.closePath();
 
     context.restore();
 };
 
 
+Soldier.prototype.render = function(context){
+
+    context.save();
+
+    //translate to soldier-center = 0,0
+    context.translate(this.x,this.y);
+
+    this.renderCone(context);
+    if (this.focused){
+        this.sprites_selected.renderToContextWithAngle(context, this.direction);
+    } else {
+        this.sprites.renderToContextWithAngle(context, this.direction);
+    }
+    this.renderStats(context);
+    context.restore();
+};
+
+Soldier.prototype.setSpawn = function(spawn) {
+  this.spawn = spawn;
+  this.x = parseInt(spawn.x);
+  this.y = parseInt(spawn.y);
+  this.direction = parseInt(spawn.deg);
+};
+
 Soldier.prototype.setPath = function(newPath) {
   
-}
+};
 
 Soldier.prototype.takeDamage = function(damage) {
   self.HP -= damage;
@@ -69,11 +113,11 @@ Soldier.prototype.takeDamage = function(damage) {
   } else {
     return { dead: false }
   }
-}
+};
 
 Soldier.prototype.kill = function() {
   self.HP = 0;
-}
+};
 
 
 function Sprites(file, x, y, width, height, rotations, space){
@@ -89,15 +133,15 @@ function Sprites(file, x, y, width, height, rotations, space){
 
     var img = new Image();
     img.onload = function(){
-        cxt.drawImage(img, x, y, width, height, 0,0,width,height)
+        cxt.drawImage(img, x, y, width, height, 0,0,width,height);
         for (var r = 0; r<rotations; r++){
             cxt.save();
-            cxt.translate(space*r,0)
-            cxt.translate(width/2,height/2)
-            cxt.rotate(Math.PI*2*(r/rotations))
-            cxt.translate(-width/2,-height/2)
-            cxt.drawImage(c, 0, 0, width, height, 0,0,width,height)
-            cxt.restore()
+            cxt.translate(space*r,0);
+            cxt.translate(width/2,height/2);
+            cxt.rotate(Math.PI*2*(r/rotations));
+            cxt.translate(-width/2,-height/2);
+            cxt.drawImage(c, 0, 0, width, height, 0,0,width,height);
+            cxt.restore();
         }
     };
     img.src = file;

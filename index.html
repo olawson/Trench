@@ -61,9 +61,22 @@
 
 <div class="dialog" id="connect_dialog">
   <h3>Connect to Game</h3>
-  Player Name: <input type="text" class="playerName"><br/>
-  Game Name: <input type="text" class="gameName"><br/>
-  <input type="button" value="Connect" onclick="Game.init($('#connect_dialog .playerName').val(), $('#connect_dialog .gameName').val());">
+  Player Name: <input type="text" class="playerName" value="" placeholder="(optional)"><br/>
+   <fieldset>
+     <legend>Existing Games</legend>
+     <ul id="gameList">
+     
+     </ul>
+    </fieldset>
+    <fieldset>
+      <legend>New Game</legend>
+        Game Name: <input type="text" class="gameName" value="Trench Game"><br/>
+        Map:
+        <select name="map">
+          <option value="threeLane" selected>Three Lane</option>
+         </select>
+         <input type="button" value="Create (well and join for now)" onclick="Game.init($('#connect_dialog .playerName').val(), $('#connect_dialog .gameName').val());">
+     </fieldset>
 </div>
 
 <img src="images/fight.jpg" class="fight"/>

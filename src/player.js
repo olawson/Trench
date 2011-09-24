@@ -30,6 +30,13 @@ Player.prototype.connect = function(server) {
       player.name += " " + player.side;
     }
     
+    //Attach soldiers to spawn points
+    for(var i = 0; i < Game.numSoldiersPerPlayer; i++) {
+      var spawn = Game.map.getSpawnPointForTeam(player.side);
+      player.soldiers[i].setSpawn(spawn);
+    }
+    
+    player.socket.emit('join', { game_name: Game.name, player_name: player.name });
   });
   
   player.socket.on('start', function (data) {

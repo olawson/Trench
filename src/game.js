@@ -1,19 +1,34 @@
+var GameStates = {
+  preGame: 0,
+  playing: 1,
+  over: 2
+};
+
 var Game = {
   
   //setup for page load
   map: null,
+  context: null,
+  state: GameStates.preGame,
+  
   load: function() {
+    var canvas = document.getElementById("bg_canvas");
+    this.context = canvas.getContext("2d");
     
     $("#connect_dialog").show();
     
-    //TODO make this dynamic and pulled from something else
-    this.map = threeLane;
-    this.map.render();
+    this.state = 1;
+  
+    //$('#gameList').append('<li>game name join link</li>');
   },
   
   //setup for game to begin
   init: function(playerName, gameName) {
     $("#connect_dialog").hide();
+    
+    this.map = threeLane;
+    this.map.render();
+    
     this.name = gameName || "Game "+(new Date().getTime());
     Game.initPlayer(playerName);
   },
@@ -43,13 +58,18 @@ var Game = {
   
   lastTime: null,
   loop: function() {
-    this.lastTime = this.lastTime || new Date().getTime();
-    var now = new Date().getTime();
     
-    var gameTime = now - this.lastTime();
+    if(this.state == GameStates.playing) {
+      this.lastTime = this.lastTime || new Date().getTime();
+      var now = new Date().getTime();
     
-    this.update(gameTime);
-    this.render(gameTime);
+      var gameTime = now - this.lastTime;
+    
+      console.log(gameTime);
+    
+      this.update(gameTime);
+      this.render(gameTime);
+    }
   },
   
   update: function(gameTime) {
@@ -57,6 +77,15 @@ var Game = {
   },
   
   render: function(gameTime) {
+    
+    
+    //render all soldiers
+    for(var i in Game.Player.soldiers) {
+      Game.Player.soldiers[i].render(this.context);
+    }
+    
+    
+    //render all dynamic sprites
     
   },
   
