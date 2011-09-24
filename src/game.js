@@ -10,20 +10,22 @@ var Game = {
     
   },
   
-  initPlayer: function(host, name) {
+  initPlayer: function(name) {
     this.Player = new Player(name);
     console.log(this.Player);
-    this.Player.connect(host);
+    this.Player.connect(window.location.hostname);
   },
   
   //start game (called from server)
   start: function(opponent) {
+    $("img.fight").show().fadeOut(1500);
     this.Opponent = new Player(opponent);
     if(this.Player.side == 1) {
       this.Opponent.side = 2;
     } else {
       this.Opponent.side = 1;
     }
+    this.enableClickListeners();
   },
   
   
@@ -33,30 +35,9 @@ var Game = {
     var mobile = false;
     
     Game.dragging = false;
-    
-		document.addEventListener('mousedown', function(event) {
-			 Game.dragging = true;
-		    event.preventDefault();
-		    if(Game.debugMouse) {
-			  	U_debugPoint(event.pageX,event.pageY, 'green');
-  			}
-		}, false);
-
-		document.addEventListener('mousemove', function(event) {
-			if(Game.dragging) {
-			  if(Game.debugMouse) {
-			  	U_debugPoint(event.pageX,event.pageY);
-  			}
-			}	
-		}, false);
-
-		document.addEventListener('mouseup', function(event) {
-			 Game.dragging = false;
-		   event.preventDefault();
-		   if(Game.debugMouse) {
-			   U_debugPoint(event.pageX,event.pageY, 'red');
-			 }
-		}, false);
+    document.addEventListener('mousedown', this.onTouchStart, false);
+    document.addEventListener('mousemove', this.onTouchMove, false);
+    document.addEventListener('mouseup', this.onTouchEnd, false);
   },
   
   curPath: null,
@@ -64,22 +45,22 @@ var Game = {
   onTouchStart: function(event) {
     var self = window.Game;
     self.curPath = [];
+    self.dragging = true;
     //Pick closest point
     
-    if(window.debug == true) {
+    if(Game.debugMouse == true) {
       U_debugPoint(event.pageX,event.pageY, 'green');
     }
   },
   
   onTouchEnd: function() {
     var self = window.Game;
-    
-    if(window.debug == true) {
+    if(Game.debugMouse == true) {
       U_debugPoint(event.pageX,event.pageY, 'red');
     }
-    
     self.curPath.push({x: event.pageX, y: event.pageY});
     
+    self.dragging = false;
     //
     console.log(self.curPath);
   },
@@ -87,13 +68,14 @@ var Game = {
   onTouchMove: function() {
     var self = window.Game;
     
-    self.curPath.push({x: event.pageX, y: event.pageY});
+    if(self.dragging) {
+      self.curPath.push({x: event.pageX, y: event.pageY});
     
-    if(window.debug == true) {
-      U_debugPoint(event.pageX,event.pageY, 'yellow');
+      if(Game.debugMouse == true) {
+        U_debugPoint(event.pageX,event.pageY, 'yellow');
+      }
     }
   },
-  
   
   toString: function() {
     return "Game"

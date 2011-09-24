@@ -24,7 +24,6 @@ Player.prototype.connect = function(server) {
   
   player.socket.on('start', function (data) {
     console.log(data);
-    $("img.fight").show().fadeOut(1500);
     Game.start(data['name']);
   });
   
