@@ -136,11 +136,16 @@ Soldier.prototype.setPath = function(newPath) {
 };
 
 Soldier.prototype.updatePosition = function(gametime){
+    if(!this.path || this.path.length == 0) {
+      return;
+    }
 
-    var p = path.path;
-    if (p.length==1){
-        this.x = p.x;
-        this.y = p.y;
+    var path = this.path;
+    var points = this.path.path;
+    
+    if (points.length==1){
+        this.x = points[0].x;
+        this.y = points[0].y;
         this.path.path = [];
         return;
     }
@@ -149,42 +154,40 @@ Soldier.prototype.updatePosition = function(gametime){
     var delta_time = gametime - path.time;
 
     //how far did we get?
-    var traveled = this.classification.speed/delta_time;
+    var distanceToTravel = this.classification.speed/delta_time;
 
     //so where on the path are we?
     //note: we have AT LEAST 2 path nodes if we are here!
     var lastIndex = 0;
-    for (var i=0; i<p.length-1; i++){
-        var segment_start = p[i];
-        var segment_end = p[i+1];
+    var segment_start = points[0];
+    var segment_end = points[1];
+    for (var i=0; i < points.length-1; i++){
+        segment_start = points[i];
+        segment_end = points[i+1];
         var length = U_distance_2d(segment_start.x, segment_start.y, segment_end.x, segment_end.y);
-        if (length<=traveled) { //we are done!!
-            this.x = segment_end.x;
-            this.y = segment_end.y;
-            this.direction = U_angle_2d(segment_start.x, segment_start.y, segment_end.x, segment_end.y);
-            this.path.path = [];
-            lastIndex = -1; //we're done
-            break;
-        } else { //traverse this segment, and iterate to the next
-            traveled -= length;
-            lastIndex = i;
+
+        if(length > distanceToTravel) {
+          //traverse this segment, and iterate to the next
+          break;
+        } else {
+          distanceToTravel -= length;
+          lastIndex = i;
         }
     }
 
-    if (lastIndex>-1){
-        segment_start = p[lastIndex];
-        segment_end = p[lastIndex+1];
-        this.direction = U_angle_2d(segment_start.x, segment_start.y, segment_end.x, segment_end.y);
-        this.x = path[lastIndex].x + traveled*Math.cos(this.direction*Math.PI/180);
-        this.y = path[lastIndex].y + traveled*Math.cos(this.direction*Math.PI/180);
+    this.direction = U_angle_2d(segment_start.x, segment_start.y, segment_end.x, segment_end.y);
+    if(distanceToTravel)
+    this.x = segment_start.x + distanceToTravel*Math.cos(this.direction*Math.PI/180);
+    this.y = segment_start.y + distanceToTravel*Math.sin(this.direction*Math.PI/180);
 
-        var newpath = [];
-        newpath.push({x: this.x, y:this.y});
-        for (i = lastIndex+1; i<path.length; i++){
-            newpath.push(path[i]);
-        }
-        this.path.path = newpath;
-        this.path.time = this.path.time+delta_time;
+    if (lastIndex < points.length){
+      var newpath = [];
+      newpath.push({x: this.x, y:this.y});
+      for (i = lastIndex+1; i < points.length; i++){
+          newpath.push(points[i]);
+      }
+      this.path.path = newpath;
+      this.path.time = this.path.time+delta_time;
     }
 
 };
