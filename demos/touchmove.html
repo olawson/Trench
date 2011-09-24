@@ -135,9 +135,31 @@
        z-index: 4000; 
       }
     </style>
-    <script src="/assets/application.js"></script>
     <script>
-			window.U_platform = new uPlatform('iphone', 4 , '4_1');
+			function U_debugPoint(x, y, color) {
+			  var buffer = [];
+
+			  buffer.push('<div id="dbgPt');
+			  buffer.push(U_gen_id());
+			  buffer.push('" style="background: ');
+			  buffer.push(color || 'yellow');
+			  buffer.push('; width: 15px; height: 15px; z-index: 99999; position: absolute; top: ');
+			  buffer.push(y);
+			  buffer.push('px; left: ');
+			  buffer.push(x);
+			  buffer.push('px;">');
+			  buffer.push('</div>');
+
+			  $(document.body).append(buffer.join(''));
+			}
+			
+			var U_Id_Seq = 0;
+			/**
+			 * Generates a unique (for this page) sequence id
+			 */
+			function U_gen_id() {
+			  return ++U_Id_Seq;
+			}
 		</script>
 
     
@@ -1430,6 +1452,10 @@ null
     </div>
 		<script>
 		  //$('#page').live('touchstart', window.onTouch);
+		
+		var mobile = false;
+		if(mobile) {
+		
 			document.addEventListener('touchstart', function(event) {
 			    event.preventDefault();
 					for(var i = 0; i < event.touches.length; i++) {
@@ -1456,6 +1482,26 @@ null
 						U_debugPoint(touch.pageX,touch.pageY, 'red');
 					}
 			}, false);
+		} else {
+			  window.dragging = false;
+				document.addEventListener('mousedown', function(event) {
+					 window.dragging = true;
+				    event.preventDefault();
+						U_debugPoint(event.pageX,event.pageY, 'green');
+				}, false);
+
+				document.addEventListener('mousemove', function(event) {
+					if(window.dragging) {
+						U_debugPoint(event.pageX,event.pageY);
+					}	
+				}, false);
+
+				document.addEventListener('mouseup', function(event) {
+					 window.dragging = false;
+				    event.preventDefault();
+						U_debugPoint(event.pageX,event.pageY, 'red');
+				}, false);
+		}
 		  
 		</script>
   </body>
