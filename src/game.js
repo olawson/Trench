@@ -8,6 +8,8 @@ var Game = {
     //TODO make this dynamic and pulled from something else
     this.map = threeLane;
     this.map.render();
+    
+    //$('#gameList').append('<li>game name join link</li>');
   },
   
   //setup for game to begin
