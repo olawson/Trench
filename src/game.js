@@ -12,7 +12,7 @@ var Game = {
   
   //setup for game to begin
   init: function(playerName, gameName) {
-    $("#connect_dialog").parent().hide();
+    $("#connect_dialog").hide();
     this.name = gameName || new Date().getTime();
     Game.initPlayer(playerName);
   },
