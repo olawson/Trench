@@ -34,7 +34,7 @@ function U_distance_2d(x, y, x0, y0){
 /**
  * Measure the distance between 2 points
  */
-function U_angle_2d(x, y, x0, y0){
+function U_angle_2d(x1, y1, x2, y2){
   //TODO
-    return null;
+    return Math.atan2(y2-y1,x2-x1)*180/Math.PI;
 };
