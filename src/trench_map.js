@@ -42,21 +42,32 @@ TrenchMap.prototype.render = function() {
 };
 
 TrenchMap.prototype.filterPath = function(path) {
+  if(!path || path.length < 1) {
+    return [];
+  }
   var filteredPath = [];
   
   var prev = null;
+  
   for(var i in path) {
     var cur = path[i];
-
-    //TODO filter path based on collision detection and redundancy
-    if(this.pointValid(cur.x, cur.y)) {
-      filteredPath.push(cur);
-    } else {
-      alert('invalid');
-      break;
-    }
     
+    if(prev != null) {
+      var d = U_distance_2d(prev.x, prev.y, cur.x, cur.y);
+      if(d > 5) {
+        
+        //TODO filter path based on collision detection and redundancy
+        if(this.pointValid(cur.x, cur.y)) {
+          filteredPath.push(cur);
+        } else {
+          break;
+        }
+        
+      }
+    }
+
     prev = cur;
+    
   }
   
   return filteredPath;

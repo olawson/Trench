@@ -191,6 +191,7 @@ Soldier.prototype.updatePosition = function(gametime){
     }
 
     this.direction = U_angle_2d(segment_start.x, segment_start.y, segment_end.x, segment_end.y);
+    console.log(this.direction);
     this.x = segment_start.x + distanceToTravel*Math.cos(this.direction*Math.PI/180);
     this.y = segment_start.y + distanceToTravel*Math.sin(this.direction*Math.PI/180);
     this.x = segment_start.x;
