@@ -169,8 +169,6 @@ Soldier.prototype.updatePosition = function(gametime){
 
     //how far did we get?
     var distanceToTravel = (this.classification.speed / 1000) * (delta_time);
-    console.log('Time: '+ delta_time);
-    console.log('Distance: '+ distanceToTravel);
     this.path.time = this.path.time + delta_time;
 
 
@@ -195,7 +193,6 @@ Soldier.prototype.updatePosition = function(gametime){
     }
 
     this.direction = U_angle_2d(segment_start.x, segment_start.y, segment_end.x, segment_end.y);
-    console.log(this.direction);
     this.x = segment_start.x + distanceToTravel*Math.cos(this.direction*Math.PI/180);
     this.y = segment_start.y + distanceToTravel*Math.sin(this.direction*Math.PI/180);
     this.x = segment_start.x;
