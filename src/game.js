@@ -3,6 +3,7 @@ var Game = {
   //setup for page load
   map: null,
   load: function() {
+    
     $("#connect_dialog").show();
     
     //TODO make this dynamic and pulled from something else
@@ -13,7 +14,7 @@ var Game = {
   //setup for game to begin
   init: function(playerName, gameName) {
     $("#connect_dialog").hide();
-    this.name = gameName || new Date().getTime();
+    this.name = gameName || "Game "+(new Date().getTime());
     Game.initPlayer(playerName);
   },
   
@@ -24,7 +25,7 @@ var Game = {
   },
   
   //start game (called from server)
-  start: function(opponent) {
+  start: function(opponent, startTime) {
     $("img.fight").show().fadeOut(1500);
     this.Opponent = new Player(opponent);
     if(this.Player.side == 1) {
@@ -34,6 +35,8 @@ var Game = {
     }
     this.playerSides[this.Player.side] = this.Player;
     this.playerSides[this.Opponent.side] = this.Opponent;
+    
+    this.startTime = startTime;
     
     this.enableClickListeners();
   },

@@ -15,6 +15,8 @@ var file = new(static.Server)('.', { cache: cache_time }); //can also set # of s
 
 app = app.createServer(function (request, response) {
   request.addListener('end', function () {
+    //server list?
+
     // Serve files!
     file.serve(request, response);
   });
@@ -25,56 +27,80 @@ app.listen(port);
 
 
 //WebSocket Server
-var players = new Array();
+var Games = {};
+//var players = new Array();
 
 if(!debug) {
   io.set('log level', 1); // reduce logging
 }
 io.sockets.on('connection', function (socket) {
-  if(players.length < num_players) {
-    socket.T_player_id = players.length;
-    players.push(socket);
-    socket.T_player_side = players.length;
-  }
-  socket.emit('init', { side: socket.T_player_side }); //TODO - GET SIDE
   
   socket.on('join', function(data) {
-    console.log(data)
-    console.log(data['game_name'])
-    name = data['player_name']
+    consoleDebug(data)
+    var name = data['player_name'];
+    var game = data['game_name'];
+    socket.T_game = game;
+    if(!Games[game]) {
+      console.log("NO PLAYERS")
+      Games[game] = new Array();
+    }
+    if(Games[game].length < num_players) {
+      socket.T_player_id = Games[game].length;
+      Games[game].push(socket);
+      socket.T_player_side = Games[game].length;
+    }
+    if(name == 'Player') {
+      name += " " + socket.T_player_side;
+    }
+    socket.emit('init', { side: socket.T_player_side });
+    
+    consoleDebug("Have "+Games[game].length+" players for Game '"+game+"'")
     socket.set('name', name, function () {
-      if(players.length == num_players) { //start game
+      if(Games[game].length == num_players) { //start game
         setTimeout(function() {
+          console.log("Starting Game '"+game+"'")
+          var start_time = new Date().getTime();
           //Note, currently this will only work properly for 2 players
           for(var i = 0; i < num_players; i++) {
-            players[i].get('name', function(err, name) {
-              players[(i + 1) % 2].emit('start', { name: name });
+            Games[game][i].get('name', function(err, name) {
+              Games[game][(i + 1) % 2].emit('start', { name: name, start_time: start_time });
             });
           }
         },3000);
       }
-      //socket.emit('ready');
+      
     });
   });
   
   //primary relay functionality, can add additional game logic here
   socket.on('update', function(data) {
+    consoleDebug(data)
     socket.broadcast.emit('update', data);
+    
+    //TODO - Add ack for paths, as they're vital
   });
   
   
   //If either client disconnects, drop both
   socket.on('disconnect', function () {
+    var game_name = socket.T_game;
     console.log("Disconnecting "+socket.T_player_id);
-    if(players[(socket.T_player_id + 1) % 2]) {
-      console.log("Send disconnect to "+players[(socket.T_player_id + 1) % 2].T_player_id);
-      players[(socket.T_player_id + 1) % 2].emit('disconnect');
+    if(Games[game_name][(socket.T_player_id + 1) % 2]) {
+      console.log("Send disconnect to "+Games[game_name][(socket.T_player_id + 1) % 2].T_player_id);
+      Games[game_name][(socket.T_player_id + 1) % 2].emit('disconnect');
     } else {
       console.log('closed');
     }
-    players = new Array();
+    //players = new Array();
+    Games[game_name] = null;
   });
 });
+
+
+function consoleDebug(logItem) {
+  if (debug)
+    console.log(logItem);
+}
 
 
 //Done

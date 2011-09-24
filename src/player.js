@@ -19,6 +19,10 @@ Player.prototype.connect = function(server) {
   
   
   player.socket = io.connect('http://'+server);
+  player.socket.on('connect', function (data) {
+    player.socket.emit('join', { game_name: Game.name, player_name: player.name });
+  });
+  
   player.socket.on('init', function (data) {
     console.log(data);
     player.side = data['side'];
@@ -26,12 +30,11 @@ Player.prototype.connect = function(server) {
       player.name += " " + player.side;
     }
     
-    player.socket.emit('join', { game_name: Game.name, player_name: player.name });
   });
   
   player.socket.on('start', function (data) {
     console.log(data);
-    Game.start(data['name']);
+    Game.start(data['name'], data['start_time']);
   });
   
   player.socket.on('update', function (data) {
