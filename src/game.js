@@ -79,7 +79,10 @@ var Game = {
       }
     
       this.enableClickListeners();
-    }
+      
+	  //Starting the audio
+	  startSound();
+    }  
   },
   
   lastTime: null,
@@ -165,7 +168,7 @@ var Game = {
     if(soldier) {
       var path = {time: Game.getTime(), path: [{x: soldier.x, y: soldier.y}]};
       self.Player.sendUpdate('path', soldier.getId(), path);
-      self.Player.focusedSoldier.setPath(path);
+      soldier.setPath(path);
     } 
     
     if(Game.debugMouse == true) {
