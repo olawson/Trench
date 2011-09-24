@@ -62,3 +62,17 @@ Player.prototype.connect = function(server) {
 }
 
 
+Player.prototype.sendUpdate = function(type, soldierId, data) {
+  socketData = {};
+  socketData['update_type'] = type;
+  
+  if(soldierId) {
+    socketData['soldier_id'] = soldierId;
+  }
+  
+  socketData[type] = data;
+  
+  this.socket.emit('update', socketData);
+}
+
+
