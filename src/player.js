@@ -36,7 +36,6 @@ Player.prototype.connect = function(server) {
       player.soldiers[i].setSpawn(spawn);
     }
     
-    player.socket.emit('join', { game_name: Game.name, player_name: player.name });
   });
   
   player.socket.on('start', function (data) {

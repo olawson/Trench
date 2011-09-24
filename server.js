@@ -16,6 +16,7 @@ var file = new(static.Server)('.', { cache: cache_time }); //can also set # of s
 app = app.createServer(function (request, response) {
   request.addListener('end', function () {
     //server list?
+    //if(request['url'] == '/server_list')
 
     // Serve files!
     file.serve(request, response);
