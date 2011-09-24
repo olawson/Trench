@@ -1,6 +1,6 @@
 //HTTP / WS Server for Trench Game
 
-var port = Number(process.argv[2]) || 1337;
+var port = process.env.PORT || Number(process.argv[2]) || 1337;
 var debug = process.argv[3];
 var num_players = 2;
 
