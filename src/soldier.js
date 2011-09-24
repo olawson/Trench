@@ -30,6 +30,7 @@ Soldier.prototype.classification = MachineGunner;
 Soldier.prototype.direction = 45;
 Soldier.prototype.sprites = SpriteSets.axis;
 Soldier.prototype.focused = false;
+Soldier.prototype.spawn = null;
 
 Soldier.prototype.renderCone = function(context){
     context.save();
@@ -92,6 +93,12 @@ Soldier.prototype.render = function(context){
     context.restore();
 };
 
+Soldier.prototype.setSpawn = function(spawn) {
+  this.spawn = spawn;
+  this.x = parseInt(spawn.x);
+  this.y = parseInt(spawn.y);
+  this.direction = parseInt(spawn.deg);
+};
 
 Soldier.prototype.setPath = function(newPath) {
   
