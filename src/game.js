@@ -14,7 +14,7 @@ var Game = {
   
   respawnRate: 10000,
   lastRespawn: -600000,
-  targetScore: 15,
+  targetScore: 5,
   
   load: function() {
     var canvas = document.getElementById("bg_canvas");
@@ -89,8 +89,8 @@ var Game = {
     
       this.enableClickListeners();
       
-	  //Starting the audio
-	  startSound();
+	    //Starting the audio
+	    startSound();
     }  
   },
   
@@ -162,7 +162,7 @@ var Game = {
     }
     
     try {
-    $('#respawnTimer').html(Math.floor((this.respawnRate - (this.lastRespawn - gameTime)) / 1000));
+    $('#respawnTimer').html('Respawn in: ' + Math.floor((this.respawnRate - (gameTime - this.lastRespawn)) / 1000));
   } catch(e) {
     //
   }
@@ -172,6 +172,12 @@ var Game = {
     
   },
   
+  
+  gameOver: function(winner) {
+    this.state = GameStates.over;
+    $('#winner').html(winner);
+    $('#gameOver').fadeIn();
+  }, 
   
   respawn: function() {
     for(var i in Game.Player.soldiers) {

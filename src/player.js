@@ -56,6 +56,10 @@ Player.prototype.connect = function(server) {
 Player.prototype.scorePoint = function(score) {
   this.score += score || 1;
   $("#score_"+this.side).html(Game.targetScore - this.score);
+  
+  if(this.score >= Game.targetScore) {
+    Game.gameOver(this.name);
+  }
 }
 
 Player.prototype.getClosestSoldierTo = function(x, y) {
