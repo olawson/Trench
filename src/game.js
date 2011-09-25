@@ -12,6 +12,10 @@ var Game = {
   context: null,
   state: GameStates.preGame,
   
+  respawnRate: 10000,
+  lastRespawn: -600000,
+  targetScore: 15,
+  
   load: function() {
     var canvas = document.getElementById("bg_canvas");
     this.context = canvas.getContext("2d");
@@ -104,6 +108,12 @@ var Game = {
   },
   
   update: function(gameTime) {
+    
+    if(gameTime - this.lastRespawn > this.respawnRate) {
+      this.respawn();
+      this.lastRespawn = gameTime;
+    }
+    
     if(this.state == GameStates.playing) {
         for(var i in Game.Player.soldiers) {
             Game.Player.soldiers[i].firing = false;
@@ -152,11 +162,33 @@ var Game = {
       }
     }
     
+    try {
+    $('#respawnTimer').html(Math.floor((this.respawnRate - (this.lastRespawn - gameTime)) / 1000));
+  } catch(e) {
+    //
+  }
+    
     
     //render all dynamic sprites
     
   },
   
+  
+  respawn: function() {
+    for(var i in Game.Player.soldiers) {
+      if(Game.Player.soldiers[i].dead == true) {
+        Game.Player.soldiers[i].respawn();
+      }
+    }
+    
+    if(Game.Opponent) {
+      for(var i in Game.Opponent.soldiers) {
+        if(Game.Opponent.soldiers[i].dead == true) {
+          Game.Opponent.soldiers[i].respawn();
+        }
+      }
+    }
+  },
   
   
   

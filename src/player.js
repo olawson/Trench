@@ -47,7 +47,6 @@ Player.prototype.connect = function(server) {
   });
   
   player.socket.on('disconnect', function (data) {
-    console.log(data);
     player.socket.emit('disconnect');
     Game.load();
   });
@@ -56,7 +55,7 @@ Player.prototype.connect = function(server) {
 
 Player.prototype.scorePoint = function(score) {
   this.score += score || 1;
-  $("#score_"+this.side).html(this.score);
+  $("#score_"+this.side).html(Game.targetScore - this.score);
 }
 
 Player.prototype.getClosestSoldierTo = function(x, y) {
@@ -66,6 +65,11 @@ Player.prototype.getClosestSoldierTo = function(x, y) {
   
   for(var i in this.soldiers) {
     var s = this.soldiers[i];
+    
+    if(s.dead == true) {
+      continue;
+    }
+      
     
     var d = U_distance_2d(x,y,s.x,s.y);
     if(d < minDistance) {

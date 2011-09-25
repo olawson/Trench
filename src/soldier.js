@@ -247,18 +247,35 @@ Soldier.prototype.updatePosition = function(gametime){
     }
 };
 
+Soldier.prototype.respawn = function() {
+  this.HP = 100;
+  this.dead = false;
+};
+
 Soldier.prototype.updateHP = function (damage){
     if (this.takeDamage(damage).dead){
-        Game.Player.sendUpdate("kill", this.getId(), {});
+        this.die();
     } else {
-        Game.Player.sendUpdate("damage", this.getId(), {damage : damage});
+        Game.Player.sendUpdate("damage", this.getId(), damage);
     }
-
-
 }
 
+Soldier.prototype.die = function() {
+  Game.Player.sendUpdate("death", this.getId(), {});
+  var path = {time: Game.getTime(), path: [{x: this.spawn.x, y: this.spawn.y}]};
+  Game.Player.sendUpdate('path', this.getId(), path);
+  this.path = path;
+  this.attackers = {};
+  this.kill();
+};
+
 Soldier.prototype.takeDamage = function(damage) {
+  if(this.HP <= 0) {
+    return {};
+  }
   this.HP -= damage;
+
+  shootSound.play();
 
   if(this.HP <= 0) {
     this.HP = 0;
@@ -270,7 +287,9 @@ Soldier.prototype.takeDamage = function(damage) {
 
 Soldier.prototype.kill = function() {
   this.HP = 0;
-  Game.playerSides[(this.side + 1) % 2].scorePoint();
+  this.dead = true;
+  Game.playerSides[(this.side % 2) + 1].scorePoint();
+  killSound.play();
 };
 
 Soldier.prototype.chooseTypeUi = function() {
