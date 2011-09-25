@@ -45,7 +45,6 @@ var Game = {
   
   initPlayer: function(name) {
     this.Player = new Player(name);
-    console.log(this.Player);
     this.Player.connect(window.location.hostname, self.name);
   },
   
@@ -53,7 +52,6 @@ var Game = {
   start: function(opponent, startTime) {
     this.startTime = new Date().getTime();
     
-    console.log('Start');
     if(this.state == GameStates.preGame) {
       this.state = GameStates.playing;
       
@@ -200,12 +198,36 @@ var Game = {
   dragging: false,
   
   enableClickListeners: function() {
-    var mobile = false;
+    var mobile = (typeof window.orientation != "undefined");
     
     Game.dragging = false;
-    document.addEventListener('mousedown', this.onTouchStart, false);
-    document.addEventListener('mousemove', this.onTouchMove, false);
-    document.addEventListener('mouseup', this.onTouchEnd, false);
+    if(mobile) {
+  		document.addEventListener('touchstart', function(event) {
+  		        Game.dragging = true;
+  		    if(event.touches.length > 0) {
+  		      	var touch = event.touches[0];
+  		      	Game.onTouchStart(touch);
+  		    }
+  		}, false);
+	
+  		document.addEventListener('touchmove', function(event) {
+  				for(var i = 0; i < event.touches.length; i++) {
+  					var touch = event.touches[i];
+  					Game.onTouchMove(touch);
+  				}
+  		}, false);
+		
+  		document.addEventListener('touchend', function(event) {
+  		    if(event.touches.length > 0) {
+  		      var touch = event.changedTouches[i];
+  		      Game.onTouchEnd(touch);
+  		    }
+  		}, false);
+    } else {
+      document.addEventListener('mousedown', this.onTouchStart, false);
+      document.addEventListener('mousemove', this.onTouchMove, false);
+      document.addEventListener('mouseup', this.onTouchEnd, false);
+    }
   },
   
   curPath: null,
