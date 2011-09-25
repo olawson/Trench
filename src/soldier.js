@@ -57,6 +57,8 @@ Soldier.prototype.getDamageForTarget = function(other){
     }
 };
 
+Soldier.prototype.shootRate = 200;
+
 Soldier.prototype.continueDamageFrom = function(other, gameTime){
     var attackerStart = this.endDamageFrom(other);
 
@@ -66,10 +68,10 @@ Soldier.prototype.continueDamageFrom = function(other, gameTime){
         this.attackers[other.getId()] = attackerStart;
         var timeUnderFire = Game.getTime() - attackerStart.start;
         
-        while (timeUnderFire>1000){
+        while (timeUnderFire > this.shootRate){
             this.updateHP(other.getDamageForTarget(this));
-            timeUnderFire -= 1000;
-            attackerStart.start += 1000;
+            timeUnderFire -= this.shootRate;
+            attackerStart.start += this.shootRate;
         }
     }
 }

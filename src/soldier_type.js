@@ -1,29 +1,29 @@
 var GenericSoldier = {
     name: 'Grunt',
-    speed : 5,
+    speed : 1,
     radius : 60,
     angle : 220,
     damageAt : function(a, r){
-        return 20*(1-r/this.radius);
+        return 10*(1-r/this.radius);
     }
 };
 
 var Sniper = {
     name: 'Sniper',
-    speed : 5,
+    speed : 1,
     radius : 320,
-    angle : 3,
+    angle : 10,
     damageAt : function(a, r){
-        return 20;
+        return 90;
     }
 };
 
 var MachineGunner = {
     name: 'Gunner',
-    speed : 5,
+    speed : 1,
     radius : 140,
     angle : 40,
     damageAt : function(a, r){
-        return 20*(1.5-r/this.radius);
+        return 10*(1.5-r/this.radius);
     }
 };

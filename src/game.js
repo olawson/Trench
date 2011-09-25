@@ -29,7 +29,7 @@ var Game = {
       });
     });
 
-    window.setInterval(function(){Game.loop();}, 16);
+    window.setInterval(function(){Game.loop();}, 32);
   },
   
   //setup for game to begin
@@ -97,10 +97,9 @@ var Game = {
   lastTime: null,
   loop: function() {
     if(this.state == GameStates.playing) {
-      this.lastTime = this.lastTime || new Date().getTime();
-      var now = new Date().getTime();
-
+      this.lastTime = this.lastTime || this.getTime();
       var gameTime = this.getTime();
+
 
       this.update(gameTime);
       this.render(gameTime);
