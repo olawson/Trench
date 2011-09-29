@@ -124,6 +124,16 @@
     #respawnTimer {
       font-size: 50px;
       color: white;
+      position: absolute;
+      top: 0;
+      left: 340px;
+    }
+    
+    #gameOver {
+      display: none;
+
+      position: absolute;
+      z-index: 99999;
     }
   </style>
 </head>
@@ -187,7 +197,12 @@
 
 <img src="images/fight.jpg" class="fight"/>
 
-<div id="respawnTimer" style="position: absolute; top: 0; left: 450px;"></div>
+<div id="respawnTimer"></div>
+
+<div id="gameOver" class="dialog">
+  <h3>Game Over</h3>
+  <div id="winner"></div>Wins
+</div>
 
 </body>
 </html>

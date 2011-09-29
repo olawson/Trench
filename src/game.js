@@ -14,7 +14,7 @@ var Game = {
   
   respawnRate: 10000,
   lastRespawn: -600000,
-  targetScore: 15,
+  targetScore: 5,
   
   load: function() {
     var canvas = document.getElementById("bg_canvas");
@@ -87,8 +87,8 @@ var Game = {
     
       this.enableClickListeners();
       
-	  //Starting the audio
-	  startSound();
+	    //Starting the audio
+	    startSound();
     }  
   },
   
@@ -170,6 +170,12 @@ var Game = {
     
   },
   
+  
+  gameOver: function(winner) {
+    this.state = GameStates.over;
+    $('#winner').html(winner);
+    $('#gameOver').fadeIn();
+  }, 
   
   respawn: function() {
     for(var i in Game.Player.soldiers) {
