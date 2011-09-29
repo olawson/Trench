@@ -160,7 +160,7 @@ var Game = {
     }
     
     try {
-    $('#respawnTimer').html(Math.floor((this.respawnRate - (this.lastRespawn - gameTime)) / 1000));
+    $('#respawnTimer').html(Math.floor((this.respawnRate - (gameTime - this.lastRespawn)) / 1000));
   } catch(e) {
     //
   }
