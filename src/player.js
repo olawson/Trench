@@ -58,7 +58,7 @@ Player.prototype.scorePoint = function(score) {
   $("#score_"+this.side).html(Game.targetScore - this.score);
   
   if(this.score >= Game.targetScore) {
-    Game.gameOver(this.name);
+    Game.gameOver(this.side, this.name);
   }
 }
 

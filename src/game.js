@@ -171,10 +171,10 @@ var Game = {
   },
   
   
-  gameOver: function(winner) {
+  gameOver: function(side, winner) {
     this.state = GameStates.over;
     $('#winner').html(winner);
-    $('#gameOver').fadeIn();
+    $('#gameOver').addClass('w'+side).fadeIn();
   }, 
   
   respawn: function() {

@@ -44,17 +44,15 @@
     }
         
     .dialog {
-      display: none;
-      width: 360px;
-      height: 330px; 
-      position: absolute;
-      top: 20px;
-      left: 40px;
-      padding: 20px;
-      -moz-box-shadow: 10px 10px 5px #888;
-      -webkit-box-shadow: 10px 10px 5px #888;
-      box-shadow: 10px 10px 5px #888;
+      -webkit-box-shadow: rgba(136, 136, 136, 0.496094) 10px 10px 5px;
       background: #EEE;
+      display: none;
+      height: 330px;
+      left: 240px;
+      padding: 20px;
+      position: absolute;
+      top: 33px;
+      width: 360px;
     }
     
     img.fight {
@@ -131,9 +129,24 @@
     
     #gameOver {
       display: none;
-
+      color: white;
       position: absolute;
       z-index: 99999;
+      width: 388px;
+      height: 174px;
+      border: 3px solid black;
+    }
+    
+    #winner {
+      display: none;
+    }
+    
+    #gameOver.w2 {
+      background: url(images/axis_win.jpg);
+    }
+    
+    #gameOver.w1 {
+      background: url(images/allies_win.jpg);
     }
   </style>
 </head>
@@ -200,8 +213,7 @@
 <div id="respawnTimer"></div>
 
 <div id="gameOver" class="dialog">
-  <h3>Game Over</h3>
-  <div id="winner"></div>Wins
+  <div id="winner"></div>
 </div>
 
 </body>
