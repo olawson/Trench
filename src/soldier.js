@@ -182,7 +182,7 @@ Soldier.prototype.setPath = function(newPath) {
   this.path = newPath;
 };
 
-Soldier.prototype.updatePosition = function(gametime){
+Soldier.prototype.updatePosition = function(gametime, lastGameTime){
     if(!this.path || this.path.path.length == 0) {
       return;
     }
@@ -190,7 +190,13 @@ Soldier.prototype.updatePosition = function(gametime){
     var path = this.path;
     var points = this.path.path;
     
-    if (points.length==1){
+    
+    //DIRTY hack to get rid of jittering at the end
+    if(points.length == 2) {
+      points = [points[1]];
+    }
+    
+    if (points.length == 1){
         this.x = points[0].x;
         this.y = points[0].y;
         this.path.path = [];
@@ -198,18 +204,28 @@ Soldier.prototype.updatePosition = function(gametime){
     }
 
     //how much time have we spent on this path?
-    var delta_time = gametime - path.time;
+    var delta_time = 0;
+    if(path.time) {
+      window.ty = "path";
+      delta_time = gametime - path.time;
+      path.time = null;
+    } else {
+      window.ty = "delta";
+      delta_time = gametime - lastGameTime;
+    }
 
     //how far did we get?
     //console.log('Speed: '+ this.classification.speed);
     //console.log('Delta: '+ delta_time);
     
     var distanceToTravel = (this.classification.speed / 1000) * (delta_time);
+    window.t = delta_time;
+    window.d = distanceToTravel;
     
     //console.log('Distance: '+distanceToTravel);
     //console.log('Points: ' + points.length);
     
-    this.path.time = this.path.time + delta_time;
+    //this.path.time = this.path.time + delta_time;
 
 
 
@@ -218,6 +234,7 @@ Soldier.prototype.updatePosition = function(gametime){
     var lastIndex = 0;
     var segment_start = points[0];
     var segment_end = points[1];
+    var atEnd = false;
     for (var i=0; i < points.length-1; i++){
         segment_start = points[i];
         segment_end = points[i+1];
@@ -225,7 +242,7 @@ Soldier.prototype.updatePosition = function(gametime){
 
         lastIndex = i;
 
-        if(length > distanceToTravel) {
+        if(length >= distanceToTravel) {
           //traverse this segment, and iterate to the next
           break;
         } else {
@@ -234,19 +251,42 @@ Soldier.prototype.updatePosition = function(gametime){
     }
 
     this.direction = U_angle_2d(segment_start.x, segment_start.y, segment_end.x, segment_end.y);
-    this.x = segment_start.x + distanceToTravel*Math.cos(this.direction*Math.PI/180);
-    this.y = segment_start.y + distanceToTravel*Math.sin(this.direction*Math.PI/180);
-    this.x = segment_start.x;
-    this.y = segment_start.y;
+    
+    if(atEnd) {
+      this.x = segment_end.x;
+      this.y = segment_end.y;
+      this.path.path = [];
+    } else {
+      var newX = this.x + distanceToTravel*Math.cos(this.direction*Math.PI/180)
+      var newY = this.y + distanceToTravel*Math.sin(this.direction*Math.PI/180)
+      
+      
+      var outsideBounds = (lastIndex == points.length - 2) && !segmentContains(segment_start.x, segment_start.y, segment_end.x, segment_end.y, newX, newY);
+      
+      if(outsideBounds && false) {
+        this.path.path = [];
+      } else {
+        this.x = newX;
+        this.y = newY;
 
-    if (lastIndex < points.length){
-      var newpath = [];
-      //newpath.push({x: this.x, y:this.y});
-      for (var i = lastIndex+1; i < points.length; i++){
-          newpath.push(points[i]);
+        if (lastIndex < points.length){
+          var newpath = [];
+          newpath.push({x: this.x, y:this.y});
+          for (var i = lastIndex+1; i < points.length; i++){
+              newpath.push(points[i]);
+          }
+          this.path.path = newpath;
+        }
       }
-      this.path.path = newpath;
     }
+};
+
+var segmentContains = function(x1, y1, x2, y2, x, y) {
+  return within(x1, x, x2) && within(y1, y, y2);
+};
+
+var within = function(a1, a2, a3) {
+  return (a1 <= a2 && a2 <= a3) || (a1 >= a2 && a2 >= a3);
 };
 
 Soldier.prototype.respawn = function() {

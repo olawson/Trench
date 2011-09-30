@@ -1,6 +1,6 @@
 var GenericSoldier = {
     name: 'Grunt',
-    speed : 1,
+    speed : 500,
     radius : 60,
     angle : 220,
     damageAt : function(a, r){
@@ -10,7 +10,7 @@ var GenericSoldier = {
 
 var Sniper = {
     name: 'Sniper',
-    speed : 1,
+    speed : 300,
     radius : 320,
     angle : 10,
     damageAt : function(a, r){
@@ -20,7 +20,7 @@ var Sniper = {
 
 var MachineGunner = {
     name: 'Gunner',
-    speed : 1,
+    speed : 400,
     radius : 140,
     angle : 40,
     damageAt : function(a, r){

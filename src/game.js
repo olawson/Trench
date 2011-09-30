@@ -14,7 +14,7 @@ var Game = {
   
   respawnRate: 10000,
   lastRespawn: -600000,
-  targetScore: 5,
+  targetScore: 10,
   
   load: function() {
     var canvas = document.getElementById("bg_canvas");
@@ -67,7 +67,7 @@ var Game = {
       
       this.Player.score = 0;
       this.Opponent.score = 0;
-      $(".score").html(0);
+      $(".score").html(Game.targetScore);
       $(".score").show();
     
       //Attach soldiers to spawn points
@@ -101,6 +101,8 @@ var Game = {
 
       this.update(gameTime);
       this.render(gameTime);
+      
+      this.lastTime = gameTime;
     }
   },
   
@@ -114,13 +116,13 @@ var Game = {
     if(this.state == GameStates.playing) {
         for(var i in Game.Player.soldiers) {
             Game.Player.soldiers[i].firing = false;
-            Game.Player.soldiers[i].updatePosition(gameTime);
+            Game.Player.soldiers[i].updatePosition(gameTime, this.lastTime);
         }
 
         if(Game.Opponent) {
             for(var i in Game.Opponent.soldiers) {
                 Game.Opponent.soldiers[i].firing = false;
-                Game.Opponent.soldiers[i].updatePosition(gameTime);
+                Game.Opponent.soldiers[i].updatePosition(gameTime, this.lastTime);
             }
         }
 
